@@ -4,3 +4,4 @@ server-error.log
 server.pid
 *.zip
 __pycache__/
+live-state.json

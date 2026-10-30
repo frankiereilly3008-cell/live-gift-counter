@@ -1,0 +1,31 @@
+/* Local scenic backdrops. OBS stays transparent until its scenery option is enabled. */
+body.theme-christmas{--scene-image:url('assets/christmas-village.png');--scene-glow:#ffca782b;--scene-shadow:#071b2e}
+body.theme-halloween{--scene-image:url('assets/halloween-village.png');--scene-glow:#ff91352b;--scene-shadow:#110c21}
+body.theme-normal{--scene-image:url('assets/coastal-sunset.png');--scene-glow:#ffb39622;--scene-shadow:#092233}
+.scenery{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:0;background:var(--scene-shadow,#102333)}
+.scenery-photo{position:absolute;inset:-2%;background-image:var(--scene-image);background-size:cover;background-position:50% 50%;animation:scenery-pan 55s ease-in-out infinite alternate}
+.scenery-shade{position:absolute;inset:0;background:linear-gradient(180deg,#06132570,#07152172 55%,#07111eae)}
+.scenery-light{position:absolute;inset:0;background:radial-gradient(ellipse at 12% 45%,var(--scene-glow),transparent 38%),radial-gradient(ellipse at 88% 35%,var(--scene-glow),transparent 36%);animation:scenery-glow 7s ease-in-out infinite alternate}
+.scenery-foreground{position:absolute;left:-15%;right:-15%;bottom:-15%;height:45%;background:radial-gradient(ellipse at 28% 85%,#c7e5ed22,transparent 64%);animation:scenery-mist 22s ease-in-out infinite alternate}
+.theme-halloween .scenery-shade{background:linear-gradient(180deg,#130e2770,#160d2475 55%,#0a071dbb)}
+.theme-halloween .scenery-foreground{height:48%;background:radial-gradient(ellipse at 28% 80%,#d1beed36,transparent 55%),radial-gradient(ellipse at 68% 95%,#b4b9db33,transparent 57%);filter:blur(10px)}
+.theme-normal .scenery-shade{background:linear-gradient(180deg,#102c3a72,#13243966 55%,#082337a6)}
+.theme-normal .scenery-foreground{background:radial-gradient(ellipse at 55% 100%,#c9faff28,transparent 63%);height:30%}
+.app{position:relative;z-index:1}
+.panel{background:#121b29d6;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-color:#e7f5ff24;box-shadow:0 14px 45px #020b1555}
+.theme-halloween .panel{background:#211728d9;border-color:#ffd3a12b}
+.theme-normal .panel{background:#102b3ad9;border-color:#e5faff2b}
+.top,.app h1,.app>.sub{text-shadow:0 2px 18px #000a}
+.themebar{background:#0a1529a6;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.overlay-mode:not(.scenic-overlay) .scenery{display:none}
+.overlay-mode.scenic-overlay .scenery-shade{background:linear-gradient(180deg,#06152830,#07152150 55%,#07121c75)}
+.overlay-mode.scenic-overlay .overlay-card{padding:26px;border-radius:28px;background:radial-gradient(ellipse at 50% 50%,#071c355e,transparent 73%);filter:drop-shadow(0 3px 10px #0008)}
+.ambient-snow{display:block;border-radius:50%;background:#f5fbff;box-shadow:0 0 8px #effaff80}
+.ambient-snow:nth-child(3n){filter:blur(1.2px);opacity:.5}
+.ambient-snow:nth-child(5n){filter:blur(3px)}
+.ambient-leaf{display:block;background:linear-gradient(130deg,#f8c26d,#ba4c2e);border-radius:80% 0 80% 5%;box-shadow:0 0 12px #e19e3f22}
+@keyframes scenery-pan{from{transform:scale(1) translateX(-.5%)}to{transform:scale(1.055) translateX(.5%)}}
+@keyframes scenery-glow{from{opacity:.4}to{opacity:1}}
+@keyframes scenery-mist{from{transform:translate(-4%,3%) scale(.97);opacity:.5}to{transform:translate(6%,-6%) scale(1.15);opacity:.85}}
+@media(max-width:760px){.scenery-photo{background-position:52% center}.panel{backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}}
+@media(prefers-reduced-motion:reduce){.scenery-photo,.scenery-light,.scenery-foreground,.particle{animation:none!important}.ambient-snow,.ambient-leaf{opacity:0}}

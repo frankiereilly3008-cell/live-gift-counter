@@ -3,109 +3,101 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#10272d">
-  <title>Live Overlay Studio</title>
-  <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="theme-effects.css">
-  <link rel="stylesheet" href="studio-effects.css">
+  <title>Live Gift Counter</title>
+  <style>
+    :root{font-family:Inter,Segoe UI,Arial,sans-serif;color:#f8f4f0;background:#11121a;font-synthesis:none;font-optical-sizing:auto}
+    *{box-sizing:border-box} body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 15% 0%,#392443 0,transparent 38%),#11121a}
+    button,input{font:inherit} button{cursor:pointer;color:inherit;border:0}
+    .app{max-width:1180px;margin:auto;padding:30px 24px 48px}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}.brand{font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:#f4ad9f;font-weight:800}.top a{color:#dfc4dd;text-decoration:none;font-size:14px}.themebar{display:flex;gap:8px;margin:0 0 24px;padding:8px;background:#ffffff0a;border:1px solid #ffffff12;border-radius:14px;width:max-content}.theme-tab{padding:9px 15px;border-radius:9px;background:transparent;color:#c9c3cf;font-weight:700}.theme-tab.active{background:#d687bd;color:#241627}
+    h1{font-size:clamp(28px,4vw,42px);margin:0 0 8px}.sub{margin:0;color:#aaa5b2}.layout{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(290px,.8fr);gap:18px;margin-top:26px}.panel{background:#1d1d28;border:1px solid #ffffff14;border-radius:20px;padding:22px;box-shadow:0 18px 45px #0003}.panel h2{font-size:17px;margin:0 0 17px}.total{font-size:clamp(45px,8vw,76px);font-weight:800;letter-spacing:-.055em;margin:4px 0 8px}.tag{display:inline-flex;align-items:center;gap:7px;color:#f6c1b4;background:#f6c1b414;border:1px solid #f6c1b42a;padding:7px 11px;border-radius:999px;font-size:12px}.muted{color:#a9a5b0;font-size:13px;line-height:1.5}.coin-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:20px 0}.coin{background:linear-gradient(145deg,#613c69,#382c4c);border:1px solid #d8a3da3c;border-radius:15px;padding:14px 8px;text-align:center;transition:transform .12s,filter .12s}.coin:hover{transform:translateY(-2px);filter:brightness(1.15)}.coin b{display:block;font-size:20px}.coin small{display:block;color:#eac9ea;margin-top:5px}.row{display:flex;gap:9px;flex-wrap:wrap}.soft{background:#ffffff10;border:1px solid #ffffff14;border-radius:10px;padding:10px 13px}.soft:hover{background:#ffffff19}.goal-head{display:flex;justify-content:space-between;gap:12px;align-items:center}.goal-num{font-size:13px;color:#d7cbd8}.bar{height:10px;background:#ffffff13;border-radius:99px;overflow:hidden;margin:13px 0}.bar span{display:block;height:100%;width:0;background:linear-gradient(90deg,#ef9f97,#d985d0);border-radius:99px;transition:width .3s}.form{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field label{display:block;color:#bdb7c3;font-size:12px;margin-bottom:6px}.field input{width:100%;background:#12131b;color:#fff;border:1px solid #ffffff20;border-radius:10px;padding:10px 11px;outline:none}.field input:focus{border-color:#d58ecf}.setting-block{border-top:1px solid #ffffff12;margin-top:20px;padding-top:18px}.key-list{display:grid;gap:8px}.keyrow{display:grid;grid-template-columns:1fr auto;align-items:center;gap:12px;font-size:13px;color:#d4cfda}.key{background:#12131b;border:1px solid #ffffff25;border-radius:8px;padding:7px 12px;min-width:74px;text-align:center;color:#fff}.key.listening{border-color:#efa995;color:#efa995}.hint{min-height:18px;color:#efa995;font-size:12px;margin:8px 0 0}.flash{animation:pop .3s}@keyframes pop{50%{transform:scale(1.04);color:#ffca9e}}.footer{color:#8f8995;font-size:12px;margin-top:18px}.overlay{background:transparent;min-height:100vh;display:grid;place-items:center;padding:24px}.overlay-card{max-width:920px;width:100%;text-align:center;color:#fff;text-shadow:0 2px 7px #000;filter:drop-shadow(0 3px 8px #0008)}.season{font-family:Georgia,serif;font-size:clamp(28px,5vw,54px);font-weight:bold;color:#ffe1a3;letter-spacing:.02em}.season span{color:#ff9b92}.money-label{font-size:clamp(16px,2vw,24px);font-weight:700;color:#ffd8ca;margin-top:14px}.overlay-total{font-size:clamp(46px,8vw,94px);font-weight:900;line-height:1.05;margin:6px 0}.overlay-note{font-size:clamp(13px,1.8vw,20px);font-style:italic;margin:8px 0 18px;color:#fff4dd}.overlay-lines{display:grid;gap:9px;font-size:clamp(16px,2.5vw,27px);font-weight:700}.overlay-goal{margin:18px auto 10px;max-width:440px}.overlay-goal .bar{height:13px;background:#0008;border:1px solid #fff5}.overlay-goal .bar span{background:linear-gradient(90deg,#ffc969,#ff967f)}.overlay-msg{font-size:clamp(15px,2.2vw,24px);margin-top:16px;color:#fff1d9;font-weight:700}.overlay .muted{color:#fff9}
+    .theme-christmas{background:radial-gradient(ellipse at 78% 18%,#f3d996 0 1%,transparent 1.5%),radial-gradient(ellipse at 15% 0%,#173d43 0,transparent 42%),linear-gradient(180deg,#10252c,#17252d 64%,#152c28)}body.theme-christmas:not(.overlay-mode){background-image:radial-gradient(ellipse at 78% 18%,#f3d996 0 1%,transparent 1.5%),radial-gradient(ellipse at 15% 0%,#173d43 0,transparent 42%),linear-gradient(180deg,#10252c 0 56%,#183d35 56% 74%,#122b28 74%)}.theme-christmas .brand{color:#f4ad9f}.theme-halloween{background:radial-gradient(ellipse at 80% 17%,#f5c879 0 2%,#e88b3b 2.5%,transparent 8%),radial-gradient(ellipse at 15% 0%,#492616 0,transparent 42%),linear-gradient(180deg,#1d1521 0 58%,#382020 58% 78%,#17120f 78%)}body.theme-halloween:not(.overlay-mode){background-image:radial-gradient(ellipse at 80% 17%,#f5c879 0 2%,#e88b3b 2.5%,transparent 8%),radial-gradient(ellipse at 15% 0%,#492616 0,transparent 42%),linear-gradient(180deg,#1d1521 0 58%,#382020 58% 78%,#17120f 78%)}.theme-halloween .brand{color:#ffb04f}.theme-halloween .theme-tab.active{background:#ff9c3e;color:#2b1606}.theme-halloween .coin{background:linear-gradient(145deg,#754018,#412417);border-color:#ffb04f55}.theme-halloween .coin small,.theme-halloween .tag{color:#ffd092}.theme-halloween .tag{background:#ff9c3e14;border-color:#ff9c3e44}.theme-normal{background:linear-gradient(180deg,#183f56 0 55%,#256079 55% 76%,#12364f 76%)}body.theme-normal:not(.overlay-mode){background-image:radial-gradient(ellipse at 80% 18%,#e8faff 0 1.5%,transparent 2%),linear-gradient(180deg,#183f56 0 50%,#1f7891 50% 66%,#164e70 66% 100%)}.theme-normal .brand{color:#9ed5e9}.theme-normal .theme-tab.active{background:#83c8df;color:#10202a}.theme-normal .coin{background:linear-gradient(145deg,#31576a,#253348);border-color:#9ed5e955}.theme-normal .coin small,.theme-normal .tag{color:#b9e7f1}.theme-normal .tag{background:#83c8df14;border-color:#83c8df44}
+    .particle-layer{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:0}.particle{position:absolute;top:-10vh;left:var(--x);font-size:var(--size);opacity:0;animation:fall var(--duration) linear var(--delay) infinite;filter:drop-shadow(0 1px 3px #0008)}@keyframes fall{0%{transform:translate3d(0,-8vh,0) rotate(0deg);opacity:0}8%{opacity:.9}90%{opacity:.8}100%{transform:translate3d(var(--drift),112vh,0) rotate(480deg);opacity:0}}body.theme-normal .particle{opacity:0!important}.overlay>*{position:relative;z-index:1}.theme-halloween .season{color:#ffc36f}.theme-halloween .money-label{color:#ffb66b}.theme-halloween .overlay-total{color:#fff0d9}.theme-normal .season{color:#d8f5ff}.theme-normal .money-label{color:#c9eaf5}.theme-normal .overlay-total{color:#fff}
+    .gift-fx{position:fixed;inset:0;display:grid;place-items:center;pointer-events:none;z-index:5;overflow:hidden}.gift-burst{position:absolute;left:50%;top:50%;font-size:clamp(72px,18vw,210px);opacity:0;transform:translate(-50%,-50%) scale(.25);animation:giftPop .9s cubic-bezier(.15,.8,.25,1) forwards;filter:drop-shadow(0 0 24px #fff8)}@keyframes giftPop{15%{opacity:1;transform:translate(-50%,-50%) scale(1.15) rotate(-8deg)}72%{opacity:1;transform:translate(-50%,-60%) scale(1) rotate(8deg)}100%{opacity:0;transform:translate(-50%,-95%) scale(.8) rotate(0)}}.gift-fx.big .gift-burst{font-size:clamp(100px,26vw,300px)}
+    .cinema{position:absolute;inset:0;display:grid;place-items:center;overflow:hidden;isolation:isolate}.cinema::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 80%,#19122599,transparent 65%);animation:sceneIn .7s ease-out both}.cinema .hero{position:relative;font-size:clamp(100px,30vw,360px);filter:drop-shadow(0 0 25px #a9dfff);z-index:2}.cinema .hero.small{font-size:clamp(70px,18vw,220px)}.cinema .caption{position:absolute;bottom:12%;font-size:clamp(16px,3vw,38px);font-weight:900;letter-spacing:.16em;text-transform:uppercase;color:white;text-shadow:0 0 15px currentColor}.cinema .mist{position:absolute;left:-20%;right:-20%;bottom:-15%;height:45%;background:radial-gradient(ellipse,#bbf8ff6b,transparent 68%);filter:blur(18px);animation:mist 3s ease-in-out infinite alternate}.cinema .shard{position:absolute;width:7px;height:7px;border-radius:50%;background:#c9faff;box-shadow:0 0 16px 5px #9ceaff;animation:shardFly 1.2s ease-out both;left:var(--x);top:var(--y)}
+    .cinema.halloween{background:radial-gradient(ellipse at 50% 90%,#421a49aa,transparent 60%)}.cinema.christmas{background:radial-gradient(ellipse at 50% 85%,#b5e9ff66,transparent 60%)}.cinema.normal{background:radial-gradient(ellipse at 50% 85%,#2176a455,transparent 60%)}
+    .cinema.tier-100{animation:screenClear 2.8s ease-in-out both}.cinema.tier-1000 .hero{animation:emerge 4.8s cubic-bezier(.2,.7,.2,1) both}.cinema.tier-5000 .hero{animation:awaken 6.3s cubic-bezier(.15,.75,.2,1) both}.cinema.halloween.tier-5000 .hero{filter:drop-shadow(0 0 35px #7dff65)}.cinema.normal.tier-5000 .hero{filter:drop-shadow(0 0 35px #40dfff)}.cinema.tier-5000::after{content:"";position:absolute;inset:-30%;border:4px solid #ffa23b;border-radius:50%;box-shadow:0 0 60px #ff742b;animation:shockwave 1.5s .65s ease-out both}
+    .cinema.tier-10 .hero{animation:spinToken 1.5s ease-in-out both}.cinema.tier-10 .mist,.cinema.tier-10 .caption{display:none}
+    .cinema.tier-100 .hero{animation:dropFace 2.6s cubic-bezier(.2,.8,.2,1) both}.cinema.christmas.tier-100 .hero{animation:snowCurtain 2.8s ease-in-out both}.cinema.normal.tier-100 .hero{animation:waterSweep 2.8s ease-in-out both}.cinema.tier-100 .shard{animation-duration:2.5s}
+    .cinema .caption{z-index:4;text-shadow:0 0 8px currentColor,0 0 28px currentColor;animation:captionGlow 1.4s ease-in-out infinite alternate}.cinema.tier-1000::before,.cinema.tier-5000::before{background:radial-gradient(ellipse at 50% 55%,#d4c8ff36,transparent 38%),linear-gradient(180deg,#07081766,#03030a99);animation:sceneIn .5s both}.cinema.tier-1000 .mist,.cinema.tier-5000 .mist{height:60%;opacity:.9}.cinema .hero{z-index:3;text-shadow:0 0 12px #fff9,0 0 45px currentColor;transform-style:preserve-3d}.cinema.tier-1000 .shard,.cinema.tier-5000 .shard{width:5px;height:5px;animation-duration:2s}.cinema.halloween.tier-5000 .hero{font-size:0;width:clamp(190px,36vw,440px);height:clamp(180px,32vw,390px);border-radius:48% 48% 45% 45%;background:radial-gradient(ellipse at 35% 30%,#ffbd55,#ed6b14 42%,#913209 78%,#421600);box-shadow:inset -24px -18px 36px #3e1000aa,inset 16px 8px 25px #ffe08e88,0 0 70px #ff7d24;animation:awaken 6.3s cubic-bezier(.15,.75,.2,1) both}.cinema.halloween.tier-5000 .hero::before{content:"";position:absolute;inset:23% 12% 18%;background:linear-gradient(135deg,transparent 0 19%,#83ff32 20% 27%,transparent 28% 61%,#83ff32 62% 70%,transparent 71%);clip-path:polygon(0 0,44% 24%,50% 0,56% 24%,100% 0,88% 100%,12% 100%);filter:drop-shadow(0 0 14px #aaff45)}.cinema.halloween.tier-5000 .hero::after{content:"";position:absolute;left:25%;right:25%;bottom:17%;height:28%;background:#290a04;clip-path:polygon(0 0,25% 30%,38% 0,50% 32%,65% 0,80% 32%,100% 0,88% 100%,10% 100%);box-shadow:0 0 20px #adff48}.cinema.halloween.tier-5000::after{border-color:#83ff32;box-shadow:0 0 80px #ff752b,inset 0 0 50px #ff752b}.cinema.christmas.tier-5000 .hero{filter:drop-shadow(0 0 50px #9feaff) drop-shadow(0 0 100px #fff);animation:awaken 6.3s cubic-bezier(.15,.75,.2,1) both}.cinema.normal.tier-5000 .hero{font-size:clamp(120px,27vw,320px);filter:drop-shadow(0 0 35px #40dfff);animation:awaken 6.3s cubic-bezier(.15,.75,.2,1) both}.cinema.halloween.tier-1000 .hero{filter:drop-shadow(0 0 32px #b1a4ff) drop-shadow(0 0 65px #6c63ff);letter-spacing:-.15em;animation:emerge 4.8s cubic-bezier(.2,.7,.2,1) both}.cinema.christmas.tier-1000 .hero{filter:drop-shadow(0 0 28px #fff) drop-shadow(0 0 60px #58ddff);letter-spacing:-.22em;animation:emerge 4.8s cubic-bezier(.2,.7,.2,1) both}
+    @keyframes sceneIn{from{opacity:0}to{opacity:1}}@keyframes captionGlow{to{filter:brightness(1.8);letter-spacing:.23em}}@keyframes mist{to{transform:translateX(16%) scale(1.3);opacity:.5}}@keyframes shardFly{from{transform:translate(0,0) scale(.2);opacity:1}to{transform:translate(var(--dx),var(--dy)) scale(0);opacity:0}}@keyframes spinToken{0%{opacity:0;transform:translateY(35vh) rotateY(0) scale(.3)}18%,78%{opacity:1}100%{transform:translateY(-20vh) rotateY(900deg) scale(1.2);opacity:0}}@keyframes screenClear{0%{opacity:0;backdrop-filter:blur(0)}15%,70%{opacity:1;backdrop-filter:blur(5px)}100%{opacity:0;backdrop-filter:blur(0)}}@keyframes dropFace{0%{opacity:0;transform:translateY(-70vh) scale(.4) rotate(-25deg)}22%,65%{opacity:1;transform:translateY(0) scale(1.2) rotate(0)}100%{opacity:0;transform:translateY(80vh) scale(1.8)}}@keyframes snowCurtain{0%{opacity:0;transform:translateY(-70vh) scale(.1)}15%,80%{opacity:1;transform:translateY(0) scale(2.2)}100%{opacity:0;transform:translateY(80vh) scale(.2)}}@keyframes waterSweep{0%{opacity:0;transform:translate(-100vw,35vh) scaleX(.3)}20%,75%{opacity:1;transform:translate(0,0) scaleX(2.6)}100%{opacity:0;transform:translate(100vw,-40vh) scaleX(.3)}}@keyframes emerge{0%{opacity:0;transform:translateY(25vh) scale(.15) rotate(-15deg)}18%,67%{opacity:1}77%{transform:scale(1.7)}88%{transform:scale(2.5) translateY(0)}100%{opacity:0;transform:scale(.2) translateY(-20vh)}}@keyframes awaken{0%{opacity:0;transform:translateY(-75vh) scale(.15)}14%{opacity:1;transform:translateY(5vh) scale(1.3)}20%{transform:translateY(0) scale(1)}40%{filter:brightness(1.8);transform:scale(1.5)}62%{transform:scale(2.5)}78%{transform:scale(4)}100%{opacity:0;transform:scale(.1) rotate(35deg)}}@keyframes shockwave{0%{transform:scale(.05);opacity:1}100%{transform:scale(1.5);opacity:0}}
+    @media(prefers-reduced-motion:reduce){.cinema *,.cinema::before,.cinema::after{animation-duration:.01ms!important;animation-iteration-count:1!important}}
+    body.overlay-mode{background:transparent!important;min-height:100vh;overflow:hidden}
+    .scene-art{position:absolute;inset:0;display:grid;place-items:center;perspective:1000px;z-index:3}.spark-icon{font-size:clamp(100px,24vw,300px);animation:heroBloom 1.5s ease-out both;filter:drop-shadow(0 0 28px #fff)}
+    .cinema.tier-1000 .caption,.cinema.tier-5000 .caption{display:none}
+    .gift-prop{position:relative;filter:drop-shadow(0 18px 28px #0009);animation:spinGift 1.7s cubic-bezier(.2,.7,.2,1) both}.present{width:clamp(110px,17vw,210px);height:clamp(85px,13vw,160px);background:linear-gradient(135deg,#ff5968,#ad123d);border-radius:10px;box-shadow:inset -15px -12px 24px #690923,inset 8px 7px 18px #ffb3a866,0 0 50px #ff638b}.present .lid{position:absolute;left:-8%;top:-15%;width:116%;height:23%;background:linear-gradient(#ffdc8a,#d58d33);border-radius:9px;box-shadow:0 8px 13px #0005}.ribbon-v,.ribbon-h{position:absolute;background:linear-gradient(90deg,#fff2a5,#f9c345,#fff2a5)}.ribbon-v{left:43%;top:-15%;height:115%;width:14%}.ribbon-h{left:-8%;top:40%;height:17%;width:116%}.bow{position:absolute;top:-43%;left:34%;font-size:clamp(40px,7vw,80px);color:#ffea9c;text-shadow:0 0 20px #ffcf4d}.mini-pumpkin{width:150px;height:126px;border-radius:45% 45% 48% 48%;background:radial-gradient(ellipse at 35% 28%,#ffb344,#e75b13 58%,#762707);box-shadow:inset -15px -14px 18px #35100099,0 0 40px #ff721f}.mini-pumpkin:before,.mini-pumpkin:after{content:"";position:absolute;top:5%;height:90%;width:45%;border-left:8px solid #ffbd5a44;border-right:8px solid #5f1d0744;border-radius:50%}.mini-pumpkin:before{left:10%}.mini-pumpkin:after{right:10%}.mini-pumpkin .stem{position:absolute;top:-22%;left:43%;width:18%;height:25%;background:#4a651b;border-radius:40% 10%;transform:rotate(12deg)}.mini-pumpkin .eyes:before,.mini-pumpkin .eyes:after{content:"";position:absolute;top:39%;width:25px;height:30px;background:#fff07a;clip-path:polygon(50% 0,100% 100%,0 100%);filter:drop-shadow(0 0 9px #fffd69)}.mini-pumpkin .eyes:before{left:24%}.mini-pumpkin .eyes:after{right:24%}.mini-pumpkin .mouth{position:absolute;left:32%;right:32%;bottom:17%;height:20px;background:#381006;clip-path:polygon(0 0,20% 30%,35% 0,50% 35%,68% 0,80% 32%,100% 0,90% 100%,10% 100%)}.surfboard{width:80px;height:235px;border-radius:60% 60% 25% 25%;background:linear-gradient(90deg,#e3fbff,#48c8df 24%,#ffedc4 50%,#ff8d50 78%,#31779e);box-shadow:0 0 35px #7aeaff}.surfboard .stripe{position:absolute;inset:10% 43%;background:#fff9}.surfboard .fin{position:absolute;bottom:-9%;left:40%;width:20%;height:17%;background:#ff8153;clip-path:polygon(50% 0,100% 100%,0 100%)}
+    .scene-art:has(.gift-prop){animation:heroBloom 1.7s ease-out both}.cinema.tier-10 .mist,.cinema.tier-10 .caption{display:none}
+    .weather-sweep{position:absolute;inset:-12%;display:flex;justify-content:space-around;align-items:flex-start;overflow:hidden}.weather-sweep i{position:absolute;left:var(--x);top:-15%;font-style:normal;font-size:clamp(22px,4vw,56px);animation:weatherFall 2.7s var(--delay) ease-in both;filter:drop-shadow(0 0 10px #fff)}.weather-sweep.halloween i{filter:drop-shadow(0 0 12px #ff8a31)}.weather-sweep.normal i{width:clamp(90px,20vw,260px);height:clamp(90px,20vw,260px);border-radius:50%;background:radial-gradient(ellipse at 50% 20%,#d6fbffbb,#2494d899 42%,transparent 72%);font-size:0;filter:blur(7px);animation:waterFall 2.8s var(--delay) ease-in-out both}
+    .ghost-duo{position:relative;width:min(80vw,760px);height:70vh;display:flex;align-items:center;justify-content:space-between}.ghost{position:relative;width:clamp(100px,19vw,210px);height:clamp(140px,27vw,300px);border-radius:52% 52% 20% 20%;background:radial-gradient(ellipse at 35% 25%,#fff,#d6d9ff 55%,#9ba4d8cc);opacity:.84;filter:drop-shadow(0 0 35px #9aa6ff);animation:ghostFloat 2.6s ease-in-out infinite alternate}.ghost:before{content:"";position:absolute;top:36%;left:27%;width:13%;height:17%;border-radius:50%;background:#202242;box-shadow:clamp(25px,5vw,50px) 0 #202242,0 0 8px #34345e}.ghost:after{content:"";position:absolute;bottom:-12%;left:0;width:100%;height:30%;background:inherit;clip-path:polygon(0 0,20% 45%,40% 0,60% 45%,80% 0,100% 45%,100% 0);filter:blur(1px)}.ghost.right{animation-delay:-1.2s;transform:scale(.82)}.ghost-duo b,.elf-scene b,.wave-scene b,.holiday-finale b,.warrior-scene b{position:absolute;bottom:6%;color:#fff;font-weight:900;letter-spacing:.2em;text-shadow:0 0 18px currentColor;font-size:clamp(16px,3vw,36px);white-space:nowrap;animation:captionGlow 1.4s infinite alternate}
+    .elf-scene{position:relative;width:min(80vw,760px);height:72vh;display:flex;align-items:center;justify-content:space-evenly}.elf{font-style:normal;font-size:clamp(100px,21vw,240px);filter:drop-shadow(0 0 25px #a6f3ff);animation:elfSneak 4.8s ease-in-out both}.elf.right{animation-delay:.25s;transform:scaleX(-1)}.cane{font-style:normal;font-size:clamp(90px,17vw,190px);filter:drop-shadow(0 0 24px #ffe5b6);animation:caneSnatch 4s 1s ease-in-out both}.snowburst{position:absolute;inset:0;background-image:radial-gradient(#fff 2px,transparent 3px),radial-gradient(#c9f2ff 3px,transparent 4px);background-size:37px 43px,67px 71px;animation:snowBlast 2s 2.8s ease-in both;opacity:0}
+    .wave-scene{position:absolute;inset:0;display:grid;place-items:center}.wave-crest{font-style:normal;font-size:clamp(200px,48vw,580px);filter:drop-shadow(0 0 35px #5af3ff);animation:waveCrash 4.8s ease-in-out both}.giant-pumpkin{position:relative;width:clamp(230px,42vw,520px);height:clamp(210px,39vw,480px);border-radius:48% 48% 43% 43%;background:repeating-linear-gradient(90deg,#9b350b 0 9%,#fa8120 12% 22%,#bb480d 26% 34%);box-shadow:inset -32px -24px 55px #351000cc,inset 18px 10px 35px #ffd07e66,0 0 90px #ff6d1e;animation:pumpkinAwake 6.3s cubic-bezier(.15,.75,.2,1) both}.pumpkin-stem{position:absolute;top:-18%;left:43%;width:17%;height:24%;background:linear-gradient(90deg,#31501c,#84a735,#243c13);border-radius:70% 10%;transform:rotate(-14deg)}.pumpkin-eyes:before,.pumpkin-eyes:after{content:"";position:absolute;top:38%;width:27%;height:19%;background:#b8ff55;clip-path:polygon(50% 0,100% 100%,0 85%);filter:drop-shadow(0 0 20px #b7ff37)}.pumpkin-eyes:before{left:17%}.pumpkin-eyes:after{right:17%}.pumpkin-mouth{position:absolute;left:25%;right:25%;bottom:15%;height:24%;background:#220901;clip-path:polygon(0 0,16% 35%,31% 0,50% 40%,69% 0,84% 35%,100% 0,88% 100%,12% 100%);filter:drop-shadow(0 0 17px #a6ff43)}.pumpkin-mouth:after{content:"";position:absolute;inset:12%;background:#bbff56;clip-path:polygon(0 0,100% 10%,90% 100%,10% 85%);opacity:.7}.crack{position:absolute;inset:15%;background:linear-gradient(118deg,transparent 47%,#baff62 48% 49%,transparent 50% 100%);filter:drop-shadow(0 0 12px #adff3c)}
+    .holiday-finale{position:relative;display:flex;align-items:center;justify-content:center;width:100%;height:75vh}.holiday-finale i{font-style:normal;font-size:clamp(140px,30vw,360px);filter:drop-shadow(0 0 35px #b8f4ff);animation:giftOrbit 6.3s ease-in-out both}.holiday-finale i:nth-child(2){font-size:clamp(190px,35vw,430px);z-index:2}.holiday-finale i:nth-child(3){animation-delay:.2s}.holiday-finale b{bottom:8%}
+    .warrior-scene{position:relative;width:100%;height:78vh;display:grid;place-items:center}.portal{position:absolute;width:clamp(250px,45vw,550px);height:clamp(380px,70vh,750px);border:8px solid #6eeeff;border-radius:50%;box-shadow:0 0 30px #37dfff,inset 0 0 60px #1662ff;animation:portalOpen 6s ease both}.warrior{z-index:2;font-style:normal;font-size:clamp(170px,34vw,400px);filter:drop-shadow(0 0 25px #4cdfff);animation:warriorEnter 6.3s ease both}.energy-sword{position:absolute;z-index:3;font-style:normal;font-size:clamp(150px,28vw,330px);filter:drop-shadow(0 0 25px #60f5ff);transform:rotate(-25deg);animation:swordSwing 6.3s ease both}.slash{position:absolute;width:130vw;height:18vh;background:linear-gradient(90deg,transparent,#72fcffdd,#fff,transparent);filter:blur(8px);transform:rotate(-18deg) scaleX(0);animation:energySlash 6.3s ease both}
+    @keyframes heroBloom{0%{opacity:0;transform:translateY(35vh) scale(.15) rotateY(0)}18%,75%{opacity:1}100%{opacity:0;transform:translateY(-20vh) scale(1.15) rotateY(720deg)}}@keyframes weatherFall{0%{transform:translateY(-30vh) translateX(0) rotate(0);opacity:0}12%,76%{opacity:1}100%{transform:translateY(120vh) translateX(var(--drift)) rotate(720deg);opacity:0}}@keyframes waterFall{0%{transform:translateY(-80vh) scale(.3);opacity:0}25%,70%{opacity:1}100%{transform:translateY(95vh) scale(2);opacity:0}}@keyframes ghostFloat{to{transform:translateY(-9vh) scale(1.12)}}@keyframes elfSneak{0%{transform:translateY(60vh) scale(.15)}16%,70%{transform:translateY(0) scale(1)}40%{translate:0 -3vh}100%{transform:translateY(60vh) scale(.2)}}@keyframes caneSnatch{0%,25%{transform:scale(.2) rotate(-40deg);opacity:0}48%,73%{transform:scale(1.1) rotate(22deg);opacity:1}100%{transform:translate(40vw,-25vh) rotate(360deg);opacity:0}}@keyframes snowBlast{0%{opacity:0;transform:scale(.2)}20%,70%{opacity:1;transform:scale(1.4)}100%{opacity:0;transform:scale(2)}}@keyframes waveCrash{0%{transform:translate(-100vw,35vh) scale(.3);opacity:0}25%,70%{opacity:1;transform:translate(0,0) scale(1.25)}100%{transform:translate(100vw,-30vh) scale(.5);opacity:0}}@keyframes pumpkinAwake{0%{opacity:0;transform:translateY(-90vh) scale(.15)}14%{opacity:1;transform:translateY(5vh) scale(1.1)}21%{transform:translateY(0) scale(1)}40%{filter:brightness(1.4);transform:scale(1.4)}65%{transform:scale(2.1)}80%{transform:scale(3.2)}100%{opacity:0;transform:scale(.1) rotate(30deg)}}@keyframes giftOrbit{0%{transform:translateY(60vh) scale(.2) rotate(-25deg);opacity:0}15%,70%{opacity:1}48%{transform:translateY(-5vh) scale(1.2) rotate(15deg)}100%{transform:translateY(-70vh) scale(.1) rotate(300deg);opacity:0}}@keyframes portalOpen{0%,10%{transform:scaleX(.05);opacity:0}25%,80%{transform:scaleX(1);opacity:1}100%{transform:scale(1.4);opacity:0}}@keyframes warriorEnter{0%{transform:translateY(50vh) scale(.1);opacity:0}25%,70%{transform:translateY(0) scale(1);opacity:1}100%{transform:scale(3);opacity:0}}@keyframes swordSwing{0%,42%{opacity:0;transform:rotate(-75deg) translateY(20vh) scale(.3)}58%{opacity:1;transform:rotate(-25deg) scale(1)}78%{transform:rotate(40deg) scale(2)}100%{opacity:0;transform:rotate(70deg) scale(4)}}@keyframes energySlash{0%,55%{transform:rotate(-18deg) scaleX(0);opacity:0}68%{transform:rotate(-18deg) scaleX(1);opacity:1}85%,100%{transform:rotate(-18deg) scaleX(1.4);opacity:0}}
+    @media(max-width:760px){.layout{grid-template-columns:1fr}.coin-grid{grid-template-columns:repeat(3,1fr)}.app{padding:22px 15px}.themebar{width:100%;justify-content:space-around}}
+  </style>
+  <link rel="stylesheet" href="premium-christmas-scenes.css">
+  <link rel="stylesheet" href="premium-other-scenes.css">
+  <link rel="stylesheet" href="normal-finale.css">
+  <link rel="stylesheet" href="halloween-finale.css">
+  <link rel="stylesheet" href="christmas-finale.css">
+  <link rel="stylesheet" href="theme-scenery.css">
+  <link rel="stylesheet" href="studio-controls.css">
+  <style>.coin-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.cinema.premium-scene{background:transparent;animation:none;backdrop-filter:none}.cinema.premium-scene::before,.cinema.premium-scene::after{display:none}</style>
 </head>
 <body>
-  <main id="controller" class="studio-shell">
-    <header class="studio-header">
-      <div class="studio-wordmark">LIVE OVERLAY STUDIO</div>
-      <a class="overlay-link" href="?overlay">Open OBS overlay ↗</a>
-    </header>
-    <nav class="theme-tabs" aria-label="Theme">
-      <button class="theme-btn" data-theme="christmas"><span>🎄</span> Christmas</button>
-      <button class="theme-btn" data-theme="halloween"><span>🎃</span> Halloween</button>
-      <button class="theme-btn" data-theme="normal"><span>✨</span> Normal</button>
-    </nav>
-    <div class="studio-intro"><h1>Your live gift counter</h1><p>Tap a coin button or press its keybind when a gift comes in.</p></div>
-    <section class="studio-columns">
-      <article class="studio-card counter-card">
-        <h2>Money made this live</h2>
-        <div id="earnings" class="studio-earnings">£0.00</div>
-        <div id="estimateText" class="estimate-pill">Estimate · £12.00 / 1,000 coins · 40% creator share</div>
-        <div id="coinTotal" class="visually-hidden">0</div>
-        <div class="coin-grid">
-          <button class="coin-btn" data-coins="1"><strong>1 coin</strong><small>+£0.00</small></button>
-          <button class="coin-btn" data-coins="10"><strong>10 coins</strong><small>+£0.05</small></button>
-          <button class="coin-btn" data-coins="100"><strong>100 coins</strong><small>+£0.48</small></button>
-          <button class="coin-btn" data-coins="1000"><strong>1,000 coins</strong><small>+£4.80</small></button>
-          <button class="coin-btn" data-coins="5000"><strong>5,000 coins</strong><small>+£24.00</small></button>
-          <button class="coin-btn" data-coins="10000"><strong>10,000 coins</strong><small>+£48.00</small></button>
-        </div>
-        <div class="counter-actions">
-          <button class="button" id="undoBtn">Undo last press</button>
-          <button class="button" id="resetBtn">Reset this live</button>
-          <button class="button" id="mockBtn">Mock 100-coin gift</button>
-          <button class="button" id="previewTenK">Preview 10K Christmas</button>
-        </div>
-        <div class="studio-toggles">
-          <label class="check-button"><input id="muteToggle" type="checkbox"><span>Mute sound effects</span></label>
-          <label class="check-button"><input id="sceneryToggle" type="checkbox" checked><span>Show scenery in OBS</span></label>
-        </div>
-        <p id="previewStatus" class="preview-status">10,000 coins: The Village Lights Up. Preview plays without changing your total.</p>
-        <div class="studio-tools">
-          <button class="button" id="currencyToggle">Currency: £ GBP</button>
-          <button class="button state-button" id="animationToggle">Coin animations: on</button>
-          <button class="button" id="timerBtn">Add live timer</button>
-        </div>
-        <p class="currency-note">Currency changes the symbol only. No exchange-rate conversion.</p>
-        <p class="rounding-note">Amounts are rounded to 2 decimal places for display; the exact total is retained underneath.</p>
-        <div id="statusText" class="save-note">Saved in this browser</div>
-      </article>
-      <aside class="studio-card details-card">
-        <h2>Overlay details</h2>
-        <div class="detail-grid">
-          <label>Festive heading<input id="titleInput" value="Do you love Christmas?" maxlength="48"></label>
-          <label>Live message<input id="subtitleInput" value="Share and like the live ✨" maxlength="64"></label>
-          <label>Top liker (Alt+L to edit)<input id="likerInput" value="" maxlength="32" placeholder="Add a name"></label>
-          <label>Top gifter (Alt+G to edit)<input id="gifterInput" value="" maxlength="32" placeholder="Add a name"></label>
-          <label>Savings goal label<input id="savingsLabelInput" value="Savings goal" maxlength="32"></label>
-          <label>Goal (£)<input id="goalInput" type="number" min="1" max="99999999" value="500"></label>
-        </div>
-        <div class="keybind-title">Keybinds</div>
-        <div class="keybind-list">
-          <div class="keybind-row"><span>1 coins</span><kbd class="keycap" data-bind="1">Alt+1</kbd></div>
-          <div class="keybind-row"><span>10 coins</span><kbd class="keycap" data-bind="10">Alt+2</kbd></div>
-          <div class="keybind-row"><span>100 coins</span><kbd class="keycap" data-bind="100">Alt+3</kbd></div>
-          <div class="keybind-row"><span>1,000 coins</span><kbd class="keycap" data-bind="1000">Alt+4</kbd></div>
-          <div class="keybind-row"><span>5,000 coins</span><kbd class="keycap" data-bind="5000">Alt+5</kbd></div>
-          <div class="keybind-row"><span>10,000 coins</span><kbd class="keycap" data-bind="10000">Alt+6</kbd></div>
-          <div class="keybind-row"><span>Edit top liker</span><kbd class="focus-key" data-focus="liker">Alt+L</kbd></div>
-          <div class="keybind-row"><span>Edit top gifter</span><kbd class="focus-key" data-focus="gifter">Alt+G</kbd></div>
-        </div>
-        <p class="keybind-help">Click a key, then press the key you want.</p>
-      </aside>
+<div id="scenery" class="scenery" aria-hidden="true"><div class="scenery-photo"></div><div class="scenery-light"></div><div class="scenery-shade"></div><div class="scenery-foreground"></div></div>
+<div id="particles" class="particle-layer" aria-hidden="true"></div>
+<div id="giftFx" class="gift-fx" aria-hidden="true"></div>
+<main id="controller" class="app" hidden>
+  <div class="top"><div class="brand">Live overlay studio</div><a href="?overlay" target="_blank">Open OBS overlay ↗</a></div>
+  <nav class="themebar" aria-label="Choose overlay theme"><button class="theme-tab" data-theme="christmas">🎄 Christmas</button><button class="theme-tab" data-theme="halloween">🎃 Halloween</button><button class="theme-tab" data-theme="normal">✨ Normal</button></nav>
+  <h1>Your live gift counter</h1><p class="sub">Tap a coin button or press its keybind when a gift comes in.</p>
+  <div class="layout">
+    <section class="panel">
+      <h2>Money made this live</h2><div id="total" class="total">£0.00</div>
+      <span class="tag" id="estimateTag">Estimate · £12 / 1,000 coins · 40% creator share</span>
+      <div class="coin-grid" id="coins"></div>
+      <div class="row"><button class="soft" id="undo">Undo last press</button><button class="soft" id="reset">Reset this live</button><button class="soft" id="mockGift">Mock 100-coin gift</button><button class="soft" id="previewFinale" hidden>Preview 10K wave</button><label class="soft"><input type="checkbox" id="mute"> Mute sound effects</label><label class="soft" title="Turn off to keep the OBS background transparent"><input type="checkbox" id="scenicOverlay"> Show scenery in OBS</label></div>
+      <p class="hint" id="finaleHint"></p>
+      <div class="row studio-toggles"><button class="soft" id="currencyToggle" title="Changes the symbol only; amounts stay the same">Currency: £ GBP</button><button class="soft" id="animationToggle" aria-pressed="true">Coin animations: on</button><button class="soft" id="timerToggle" aria-pressed="false">Add live timer</button><button class="soft" id="timerRestart" hidden>Restart timer</button></div>
+      <p class="muted currency-note">Currency changes the symbol only. No exchange-rate conversion.</p>
+      <div class="field timer-setting" id="timerSetting" hidden><label for="timerStart">Live started at</label><input id="timerStart" type="datetime-local" step="1"><p class="hint">Already live? Set your actual start time here.</p></div>
+      <p class="hint" id="editStatus" role="status" aria-live="polite"></p>
+      <div class="footer">Amounts are rounded to 2 decimal places for display; the exact total is retained underneath.</div>
     </section>
-    <section class="live-preview-section">
-      <h2>Live preview</h2>
-      <p>Click any overlay text or amount to edit it here. Enter saves; Escape cancels.</p>
-      <div id="liveScenery" class="live-scenery">
-        <div class="village-scene" aria-hidden="true"><i class="moon"></i><i class="village-house house-one"></i><i class="village-house house-two"></i><i class="village-house house-three"></i><i class="pine pine-one">♠</i><i class="pine pine-two">♠</i><i class="snow-bank"></i></div>
-        <div class="preview-glass">
-          <div id="overlay" class="overlay-root preview-overlay">
-            <div class="overlay-copy">
-              <div id="overlayTimer" class="overlay-timer" hidden>00:00</div>
-              <div id="overlayTitle" class="overlay-title" tabindex="0">Do you love Christmas?</div>
-              <div class="overlay-eyebrow">MONEY MADE FROM THIS LIVE</div>
-              <div id="overlayEarnings" class="overlay-earnings">£0.00</div>
-              <div id="overlayCoins" class="overlay-coins">✨ All gifts are appreciated ✨</div>
-              <div class="overlay-names"><span id="overlayLiker"></span><span id="overlayGifter"></span></div>
-              <div class="overlay-goal"><strong id="overlayGoalLabel">Savings goal</strong><div id="overlayGoalText">£0.00 / £500.00</div><div class="overlay-track"><i id="overlayGoalFill"></i></div></div>
-              <div id="overlaySubtitle" class="overlay-caption" tabindex="0">Share and like the live ✨</div>
-            </div>
-            <div id="effectLayer" class="effect-layer" aria-live="off"></div>
-            <div id="ambientLayer" class="ambient-layer"></div>
-          </div>
-        </div>
+    <section class="panel">
+      <h2>Overlay details</h2>
+      <div class="form">
+        <div class="field"><label for="title">Festive heading</label><input id="title" data-field="title"></div>
+        <div class="field"><label for="message">Live message</label><input id="message" data-field="message"></div>
+        <div class="field"><label for="liker">Top liker <span class="muted">(Alt+L to edit)</span></label><input id="liker" data-field="liker" placeholder="Add a name"></div>
+        <div class="field"><label for="gifter">Top gifter <span class="muted">(Alt+G to edit)</span></label><input id="gifter" data-field="gifter" placeholder="Add a name"></div>
+        <div class="field"><label for="goalLabel">Savings goal label</label><input id="goalLabel" data-field="goalLabel"></div>
+        <div class="field"><label for="goal" id="goalInputLabel">Goal (£)</label><input id="goal" data-field="goal" type="number" min="0" step="1"></div>
       </div>
+      <div class="setting-block"><h2>Keybinds</h2><div id="keylist" class="key-list"></div><p class="hint" id="hint">Click a key, then press the key you want.</p></div>
     </section>
-    <footer class="studio-footer"><span id="savedLabel">Saved in this browser</span><span>Estimate is based on £12 per 1,000 coins and a 40% creator share.</span></footer>
-  </main>
-  <div id="toast" class="toast" role="status"></div>
-  <script src="animation-manager.js"></script>
-  <script src="app.js"></script>
+  </div>
+</main>
+<div class="preview-heading" id="previewHeading"><h2>Live preview</h2><p>Click any overlay text or amount to edit it here. Enter saves; Escape cancels.</p></div>
+<main id="overlay" class="overlay">
+  <div class="overlay-card">
+    <div id="oTitle" class="season" data-edit="title"></div>
+    <div id="oMoneyLabel" class="money-label" data-edit="moneyLabel">MONEY MADE FROM THIS LIVE</div>
+    <div id="oTotal" class="overlay-total" data-edit="total" data-number="true">£0.00</div>
+    <div id="oNote" class="overlay-note" data-edit="note">✨ All gifts are appreciated ✨</div>
+    <div class="overlay-lines"><div><span id="oLikerLabel" data-edit="likerLabel">💜 TOP LIKER:</span> <span id="oLiker" data-edit="liker" data-placeholder="Add top liker">—</span></div><div><span id="oGifterLabel" data-edit="gifterLabel">🎁 TOP GIFTER:</span> <span id="oGifter" data-edit="gifter" data-placeholder="Add top gifter">—</span></div></div>
+    <div class="overlay-goal"><div class="goal-head"><strong id="oGoalLabel" data-edit="goalLabel">Saving for my controller</strong><span id="oGoalNum" class="goal-num"><span id="oGoalTotal" data-edit="total" data-number="true">£0.00</span> / <span id="oGoalTarget" data-edit="goal" data-number="true">£50.00</span></span></div><div class="bar"><span id="oBar"></span></div></div>
+    <div id="oMessage" class="overlay-msg" data-edit="message">Share and like the live ✨</div>
+    <div id="oTimer" class="live-timer" hidden><span id="oTimerLabel" data-edit="timerLabel">LIVE FOR</span><span id="oTimerValue" data-edit="elapsed" data-time="true">00:00:00</span></div>
+  </div>
+</main>
+<script src="controller.js"></script>
+<script src="premium-christmas-scenes.js"></script>
+<script src="premium-other-scenes.js"></script>
+<script src="normal-finale.js"></script>
+<script src="halloween-finale.js"></script>
+<script src="christmas-finale.js"></script>
+<script src="animation-manager.js"></script>
 </body>
 </html>

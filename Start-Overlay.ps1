@@ -1,46 +1,32 @@
 $ErrorActionPreference = 'Stop'
-$projectDir = Split-Path -Parent $MyInvocation.MyCommand.Path
-$healthUrl = 'http://127.0.0.1:8765/health'
-
+$project = Split-Path -Parent $MyInvocation.MyCommand.Path
+$url = 'http://127.0.0.1:8765/'
+$serverReady = $false
 try {
-    Invoke-RestMethod -Uri $healthUrl -TimeoutSec 2 | Out-Null
-    Start-Process $healthUrl.Replace('/health', '/')
-    exit 0
-} catch {
-    # Start the local server below if no instance is listening yet.
-}
+  $null = Invoke-WebRequest -Uri ($url + 'state') -TimeoutSec 1
+  $serverReady = $true
+} catch { }
 
-$pythonPath = $null
-$pythonArgs = @()
-if (Get-Command py -ErrorAction SilentlyContinue) {
-    $pythonPath = (Get-Command py).Source
-    $pythonArgs = @('-3', 'server.py')
-} elseif (Get-Command python -ErrorAction SilentlyContinue) {
-    $pythonPath = (Get-Command python).Source
-    $pythonArgs = @('server.py')
-} else {
-    throw 'Python 3 was not found. Install Python or start the server manually.'
+$python = Get-Command python -ErrorAction SilentlyContinue
+if (-not $python) { $python = Get-Command py -ErrorAction SilentlyContinue }
+if (-not $serverReady -and -not $python) {
+  Write-Host 'Python is needed to run this local overlay. Install Python, then run this file again.' -ForegroundColor Yellow
+  Read-Host 'Press Enter to close'
+  exit 1
 }
-
-$outLog = Join-Path $projectDir 'server.log'
-$errLog = Join-Path $projectDir 'server-error.log'
-$serverProcess = Start-Process -FilePath $pythonPath -ArgumentList $pythonArgs -WorkingDirectory $projectDir -WindowStyle Hidden -PassThru -RedirectStandardOutput $outLog -RedirectStandardError $errLog
-$ready = $false
-for ($attempt = 0; $attempt -lt 30; $attempt++) {
-    Start-Sleep -Milliseconds 400
-    try {
-        Invoke-RestMethod -Uri $healthUrl -TimeoutSec 2 | Out-Null
-        $ready = $true
-        break
-    } catch {
-        if ($serverProcess.HasExited) { break }
-    }
+if (-not $serverReady) {
+  $exe = $python.Source
+  $pythonArgs = if ((Split-Path -Leaf $exe) -match '^py(\.exe)?$') { @('-3',(Join-Path $project 'server.py')) } else { @((Join-Path $project 'server.py')) }
+  Start-Process -FilePath $exe -ArgumentList $pythonArgs -WorkingDirectory $project -WindowStyle Hidden
+  for ($attempt = 0; $attempt -lt 20; $attempt++) {
+    Start-Sleep -Milliseconds 250
+    try { $null = Invoke-WebRequest -Uri ($url + 'state') -TimeoutSec 1; $serverReady = $true; break } catch { }
+  }
 }
-
-if (-not $ready) {
-    throw "The local server did not start. Check $errLog for details."
+if (-not $serverReady) {
+  Write-Host 'The local overlay server did not start on 127.0.0.1:8765. Check whether another app is using port 8765, then run this file again.' -ForegroundColor Red
+  Read-Host 'Press Enter to close'
+  exit 1
 }
-
-Set-Content -LiteralPath (Join-Path $projectDir 'server.pid') -Value $serverProcess.Id -Encoding ascii
-Start-Process 'http://127.0.0.1:8765/'
-Write-Host 'Live Gift Counter is running at http://127.0.0.1:8765/'
+Start-Process $url
+Write-Host 'Overlay server is responding at http://127.0.0.1:8765/. Keep it running while you stream.'
