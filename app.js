@@ -2,43 +2,62 @@
   const params = new URLSearchParams(location.search);
   const overlayMode = params.has('overlay');
   const hostedMode = location.protocol === 'file:' || !['127.0.0.1', 'localhost'].includes(location.hostname);
-  if (overlayMode) document.body.classList.add('overlay-mode');
+  if (overlayMode) {
+    const overlay = document.getElementById('overlay');
+    if (overlay) document.body.appendChild(overlay);
+    document.body.classList.add('overlay-mode');
+  }
   const $ = (id) => document.getElementById(id);
   const COIN_VALUE = 0.0048;
-  const defaults = { theme: 'normal', title: 'LIVE GIFT COUNTER', subtitle: 'Thanks for the love!', liker: '', gifter: '', goal: 10000, totalCoins: 0, muted: false };
+  const defaults = { theme: 'christmas', title: 'Do you love Christmas?', subtitle: 'Share and like the live ✨', liker: '', gifter: '', savingsLabel: 'Savings goal', goal: 500, totalCoins: 0, muted: true, currency: 'USD', showScenery: true, animations: true, liveTimer: false, studioVersion: 2 };
   let state = { ...defaults }, seq = 0, booted = false, busy = false, saveTimer, toastTimer, undoStack = [], queuedPatch = {};
-  if (hostedMode) { try { state = { ...state, ...JSON.parse(localStorage.getItem('giftCounterState') || '{}') }; } catch (_) { /* Start fresh if browser storage is unavailable. */ } }
-  let bindings = { 1: { key: '1', alt: true }, 10: { key: '2', alt: true }, 100: { key: '3', alt: true }, 1000: { key: '4', alt: true }, 5000: { key: '5', alt: true }, liker: { key: 'l', alt: true }, gifter: { key: 'g', alt: true } };
+  if (hostedMode) { try { const old = JSON.parse(localStorage.getItem('giftCounterState') || '{}'); state = old.studioVersion === 2 ? { ...state, ...old } : { ...state, totalCoins: Number(old.totalCoins) || 0 }; } catch (_) { /* Start fresh if browser storage is unavailable. */ } }
+  let bindings = { 1: { key: '1', alt: true }, 10: { key: '2', alt: true }, 100: { key: '3', alt: true }, 1000: { key: '4', alt: true }, 5000: { key: '5', alt: true }, 10000: { key: '6', alt: true }, liker: { key: 'l', alt: true }, gifter: { key: 'g', alt: true } };
   try { bindings = { ...bindings, ...JSON.parse(localStorage.getItem('giftCounterBindings') || '{}') }; } catch (_) { /* Use defaults when local storage is unavailable. */ }
-  const money = coins => `£${(Number(coins || 0) * COIN_VALUE).toFixed(2)}`;
+  const currencySymbol = () => state.currency === 'USD' ? '$' : '£';
+  const money = coins => `${currencySymbol()}${(Number(coins || 0) * COIN_VALUE).toFixed(2)}`;
   function setOnline(ok) { const status = document.querySelector('.server-status'); if (status) status.classList.toggle('online', ok); if ($('statusText')) $('statusText').textContent = hostedMode ? 'Saved in this browser' : ok ? 'Server connected' : 'Server unreachable'; }
   function render() {
-    const coins = Number(state.totalCoins) || 0, goal = Math.max(1, Number(state.goal) || 1), pct = Math.min(100, coins / goal * 100);
+    const coins = Number(state.totalCoins) || 0, earned = coins * COIN_VALUE, goal = Math.max(1, Number(state.goal) || 1), pct = Math.min(100, earned / goal * 100);
     document.body.dataset.theme = state.theme;
     document.body.classList.remove('theme-christmas', 'theme-halloween', 'overlay-theme-normal');
     document.body.classList.add(`theme-${state.theme}`);
     if ($('earnings')) $('earnings').textContent = money(coins);
-    if ($('coinEstimate')) $('coinEstimate').textContent = `£${COIN_VALUE.toFixed(4)} per coin`;
-    document.querySelectorAll('.coin-btn[data-coins]').forEach(button => { const estimate = button.querySelector('small'); if (estimate) estimate.textContent = money(button.dataset.coins); });
+    if ($('estimateText')) $('estimateText').textContent = `Estimate · ${currencySymbol()}12.00 / 1,000 coins · 40% creator share`;
+    if ($('coinEstimate')) $('coinEstimate').textContent = `${currencySymbol()}${COIN_VALUE.toFixed(4)} per coin`;
+    document.querySelectorAll('.coin-btn[data-coins]').forEach(button => { const estimate = button.querySelector('small'); if (estimate) estimate.textContent = `+${money(button.dataset.coins)}`; });
     if ($('coinTotal')) $('coinTotal').textContent = coins.toLocaleString('en-GB');
     if ($('goalProgress')) $('goalProgress').textContent = `${Math.floor(pct)}%`;
-    if ($('goalAmount')) $('goalAmount').textContent = `of ${goal.toLocaleString('en-GB')} coins`;
+    if ($('goalAmount')) $('goalAmount').textContent = `of ${money(goal)}`;
     if ($('progressFill')) $('progressFill').style.width = `${pct}%`;
     if ($('overlayEarnings')) $('overlayEarnings').textContent = money(coins);
-    if ($('overlayCoins')) $('overlayCoins').textContent = coins.toLocaleString('en-GB');
+    if ($('overlayCoins')) $('overlayCoins').textContent = '✨ All gifts are appreciated ✨';
     if ($('overlayTitle')) $('overlayTitle').textContent = state.title || defaults.title;
     if ($('overlaySubtitle')) $('overlaySubtitle').textContent = state.subtitle || '';
-    if ($('overlayLiker')) $('overlayLiker').textContent = state.liker ? `♡ Top liker · ${state.liker}` : '';
-    if ($('overlayGifter')) $('overlayGifter').textContent = state.gifter ? `✦ Top gifter · ${state.gifter}` : '';
-    if ($('overlayGoalText')) $('overlayGoalText').textContent = `${coins.toLocaleString('en-GB')} / ${goal.toLocaleString('en-GB')}`;
+    if ($('overlayLiker')) $('overlayLiker').textContent = state.liker ? `💜 TOP LIKER: ${state.liker}` : '';
+    if ($('overlayGifter')) $('overlayGifter').textContent = state.gifter ? `🎁 TOP GIFTER: ${state.gifter}` : '';
+    if ($('overlayGoalLabel')) $('overlayGoalLabel').textContent = state.savingsLabel || 'Savings goal';
+    if ($('overlayGoalText')) $('overlayGoalText').textContent = `${money(earned)} / ${money(goal)}`;
     if ($('overlayGoalFill')) $('overlayGoalFill').style.width = `${pct}%`;
     if ($('titleInput') && document.activeElement !== $('titleInput')) $('titleInput').value = state.title;
     if ($('subtitleInput') && document.activeElement !== $('subtitleInput')) $('subtitleInput').value = state.subtitle;
     if ($('likerInput') && document.activeElement !== $('likerInput')) $('likerInput').value = state.liker;
     if ($('gifterInput') && document.activeElement !== $('gifterInput')) $('gifterInput').value = state.gifter;
     if ($('goalInput') && document.activeElement !== $('goalInput')) $('goalInput').value = state.goal;
-    if ($('muteToggle')) $('muteToggle').checked = !state.muted;
+    if ($('savingsLabelInput') && document.activeElement !== $('savingsLabelInput')) $('savingsLabelInput').value = state.savingsLabel;
+    if ($('muteToggle')) $('muteToggle').checked = !!state.muted;
+    if ($('sceneryToggle')) $('sceneryToggle').checked = !!state.showScenery;
+    if ($('liveScenery')) $('liveScenery').classList.toggle('no-scenery', !state.showScenery);
+    if ($('currencyToggle')) $('currencyToggle').textContent = `Currency: ${currencySymbol()} ${state.currency}`;
+    if ($('animationToggle')) $('animationToggle').textContent = `Coin animations: ${state.animations ? 'on' : 'off'}`;
+    if ($('timerBtn')) $('timerBtn').textContent = state.liveTimer ? 'Live timer: on' : 'Add live timer';
+    if ($('overlayTimer')) {
+      $('overlayTimer').hidden = !state.liveTimer;
+      const seconds = Math.max(0, Math.floor((Date.now() - (Number(state.liveTimerAt) || Date.now())) / 1000));
+      $('overlayTimer').textContent = `${String(Math.floor(seconds / 60)).padStart(2,'0')}:${String(seconds % 60).padStart(2,'0')}`;
+    }
     window.counterMuted = !!state.muted;
+    window.counterAnimations = !!state.animations;
     document.querySelectorAll('.theme-btn').forEach(b => b.classList.toggle('active', b.dataset.theme === state.theme));
     renderBindingLabels();
     window.AnimationManager?.setTheme(state.theme);
@@ -125,10 +144,22 @@
   if (!overlayMode) {
     document.querySelectorAll('.coin-btn').forEach(btn => btn.addEventListener('click', () => gift(Number(btn.dataset.coins))));
     document.querySelectorAll('.theme-btn').forEach(btn => btn.addEventListener('click', () => save({ theme: btn.dataset.theme })));
-    const bindInputs = [['titleInput','title'],['subtitleInput','subtitle'],['likerInput','liker'],['gifterInput','gifter']];
+    const bindInputs = [['titleInput','title'],['subtitleInput','subtitle'],['likerInput','liker'],['gifterInput','gifter'],['savingsLabelInput','savingsLabel']];
     bindInputs.forEach(([id,key]) => $(id).addEventListener('input', e => scheduleSave({ [key]: e.target.value })));
     $('goalInput').addEventListener('input', e => { const val = Math.max(1, Math.min(99999999, Number(e.target.value) || 1)); scheduleSave({ goal: val }); });
-    $('muteToggle').addEventListener('change', e => save({ muted: !e.target.checked }));
+    $('muteToggle').addEventListener('change', e => save({ muted: e.target.checked }));
+    $('sceneryToggle').addEventListener('change', e => save({ showScenery: e.target.checked }));
+    $('currencyToggle').addEventListener('click', () => save({ currency: state.currency === 'USD' ? 'GBP' : 'USD' }));
+    $('animationToggle').addEventListener('click', () => save({ animations: !state.animations }));
+    $('timerBtn').addEventListener('click', () => save({ liveTimer: !state.liveTimer, liveTimerAt: state.liveTimer ? state.liveTimerAt : Date.now() }));
+    $('previewTenK').addEventListener('click', () => {
+      window.AnimationManager?.enqueue({ eventId: `preview-${Date.now()}`, coins: 10000, theme: 'christmas', previewOnly: true });
+      toast('Preview only · total unchanged');
+    });
+    document.querySelectorAll('.overlay-title,.overlay-caption').forEach(el => el.addEventListener('click', () => {
+      const input = el.id === 'overlayTitle' ? $('titleInput') : $('subtitleInput');
+      input.focus({ preventScroll: true }); input.select();
+    }));
     $('undoBtn').addEventListener('click', () => { if (!undoStack.length) return toast('Nothing to undo'); setTotal(undoStack.pop()); toast('Last count undone'); });
     $('resetBtn').addEventListener('click', () => { if (!state.totalCoins) return toast('Total is already zero'); undoStack.push(Number(state.totalCoins)); setTotal(0); toast('Total reset'); });
     $('mockBtn').addEventListener('click', () => gift(100, true));
@@ -158,4 +189,5 @@
   async function poll() { if (hostedMode) return; try { await requestState(); } catch (_) { setOnline(false); } }
   render();
   if (!hostedMode) { poll(); setInterval(poll, 900); }
+  setInterval(() => { if (state.liveTimer) render(); }, 1000);
 })();

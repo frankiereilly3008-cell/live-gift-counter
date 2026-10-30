@@ -3,67 +3,106 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#101014">
-  <title>Live Gift Counter</title>
+  <meta name="theme-color" content="#10272d">
+  <title>Live Overlay Studio</title>
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="theme-effects.css">
+  <link rel="stylesheet" href="studio-effects.css">
 </head>
 <body>
-  <main id="controller" class="app-shell">
-    <header class="topbar">
-      <a class="brand" href="./" aria-label="Live Gift Counter home"><span class="brand-mark">✦</span><span><strong>GIFT COUNTER</strong><small>LIVE CONTROL ROOM</small></span></a>
-      <div class="server-status"><i id="statusDot"></i><span id="statusText">Connecting…</span></div>
+  <main id="controller" class="studio-shell">
+    <header class="studio-header">
+      <div class="studio-wordmark">LIVE OVERLAY STUDIO</div>
+      <a class="overlay-link" href="?overlay">Open OBS overlay ↗</a>
     </header>
-    <section class="themebar" aria-label="Choose overlay theme">
-      <div><span class="eyebrow">OVERLAY THEME</span><small>Pick a look for your stream</small></div>
-      <div class="theme-options">
-        <button class="theme-btn active" data-theme="normal"><span class="theme-icon">✦</span>Normal</button>
-        <button class="theme-btn" data-theme="christmas"><span class="theme-icon">❄</span>Christmas</button>
-        <button class="theme-btn" data-theme="halloween"><span class="theme-icon">☾</span>Halloween</button>
-      </div>
-    </section>
-    <section class="dashboard">
-      <div class="main-column">
-        <article class="card total-card">
-          <div class="card-head"><div><span class="eyebrow">STREAM TOTAL</span><h1>Gift earnings</h1></div><span class="live-pill"><i></i> LIVE</span></div>
-          <div class="earnings" id="earnings">£0.00</div>
-          <div class="stat-row"><div><strong id="coinTotal">0</strong><span>coins collected</span></div><div class="divider"></div><div><strong id="coinEstimate">£0.0048</strong><span>estimated per coin</span></div></div>
-          <div class="goal-block"><div class="goal-label"><span>Savings goal</span><span><b id="goalProgress">0%</b> <small id="goalAmount">of 10,000 coins</small></span></div><div class="progress-track"><div id="progressFill"></div></div></div>
-        </article>
-        <article class="card add-card">
-          <div class="card-head"><div><span class="eyebrow">MANUAL COUNT</span><h2>Add a gift</h2></div><span class="queue-note"><i></i> Effects play in order</span></div>
-          <div id="controlPreview" class="control-preview"><span class="preview-heading">GIFT PREVIEW</span><span id="previewEmpty" class="preview-empty">Tap a gift to see its animation</span><div id="controlAmbientLayer" class="ambient-layer"></div><div id="controlEffectLayer" class="effect-layer"></div></div>
-          <div class="coin-grid">
-            <button class="coin-btn" data-coins="1"><span class="coin-symbol">●</span><strong>1</strong><small>£0.00</small><kbd class="keycap" data-bind="1">Alt + 1</kbd></button>
-            <button class="coin-btn" data-coins="10"><span class="coin-symbol">●</span><strong>10</strong><small>£0.05</small><kbd class="keycap" data-bind="10">Alt + 2</kbd></button>
-            <button class="coin-btn" data-coins="100"><span class="coin-symbol">●</span><strong>100</strong><small>£0.48</small><kbd class="keycap" data-bind="100">Alt + 3</kbd></button>
-            <button class="coin-btn" data-coins="1000"><span class="coin-symbol">●</span><strong>1,000</strong><small>£4.80</small><kbd class="keycap" data-bind="1000">Alt + 4</kbd></button>
-            <button class="coin-btn" data-coins="5000"><span class="coin-symbol">●</span><strong>5,000</strong><small>£24.00</small><kbd class="keycap" data-bind="5000">Alt + 5</kbd></button>
-          </div>
-          <p class="hint">Click any shortcut label to change it. Shortcuts need a modifier key.</p>
-          <div class="actions"><button class="button button-quiet" id="undoBtn">↶ <span>Undo last</span></button><button class="button button-quiet" id="resetBtn">Reset total</button><button class="button button-accent" id="mockBtn">✦ <span>Mock 100-coin gift</span></button></div>
-        </article>
-      </div>
-      <aside class="side-column">
-        <article class="card settings-card">
-          <div class="card-head"><div><span class="eyebrow">ON SCREEN</span><h2>Overlay details</h2></div><span class="edit-icon">✎</span></div>
-          <label class="field-label">Headline<input id="titleInput" maxlength="48" value="LIVE GIFT COUNTER"></label>
-          <label class="field-label">Message<input id="subtitleInput" maxlength="64" value="Thanks for the love!"></label>
-          <div class="field-pair"><label class="field-label">Top liker<input id="likerInput" maxlength="32" placeholder="Add a name"><kbd class="focus-key" data-focus="liker">Alt + L</kbd></label><label class="field-label">Top gifter<input id="gifterInput" maxlength="32" placeholder="Add a name"><kbd class="focus-key" data-focus="gifter">Alt + G</kbd></label></div>
-          <label class="field-label">Savings goal <span class="input-suffix"><input id="goalInput" type="number" min="1" max="99999999" value="10000"><em>coins</em></span></label>
-          <div class="setting-footer"><label class="sound-toggle"><input id="muteToggle" type="checkbox"><span class="toggle-ui"></span><span>Sound effects</span></label><span class="saved-label" id="savedLabel">Saved locally</span></div>
-        </article>
-        <article class="card obs-card"><div class="obs-icon">▣</div><div><strong>Ready for OBS?</strong><p>Add a Browser Source with the transparent overlay URL.</p><code>http://127.0.0.1:8765/?overlay</code></div></article>
-        <p class="payout-note">Estimate uses £12 per 1,000 coins and a 40% creator share. Actual TikTok payouts vary.</p>
+    <nav class="theme-tabs" aria-label="Theme">
+      <button class="theme-btn" data-theme="christmas"><span>🎄</span> Christmas</button>
+      <button class="theme-btn" data-theme="halloween"><span>🎃</span> Halloween</button>
+      <button class="theme-btn" data-theme="normal"><span>✨</span> Normal</button>
+    </nav>
+    <div class="studio-intro"><h1>Your live gift counter</h1><p>Tap a coin button or press its keybind when a gift comes in.</p></div>
+    <section class="studio-columns">
+      <article class="studio-card counter-card">
+        <h2>Money made this live</h2>
+        <div id="earnings" class="studio-earnings">£0.00</div>
+        <div id="estimateText" class="estimate-pill">Estimate · £12.00 / 1,000 coins · 40% creator share</div>
+        <div id="coinTotal" class="visually-hidden">0</div>
+        <div class="coin-grid">
+          <button class="coin-btn" data-coins="1"><strong>1 coin</strong><small>+£0.00</small></button>
+          <button class="coin-btn" data-coins="10"><strong>10 coins</strong><small>+£0.05</small></button>
+          <button class="coin-btn" data-coins="100"><strong>100 coins</strong><small>+£0.48</small></button>
+          <button class="coin-btn" data-coins="1000"><strong>1,000 coins</strong><small>+£4.80</small></button>
+          <button class="coin-btn" data-coins="5000"><strong>5,000 coins</strong><small>+£24.00</small></button>
+          <button class="coin-btn" data-coins="10000"><strong>10,000 coins</strong><small>+£48.00</small></button>
+        </div>
+        <div class="counter-actions">
+          <button class="button" id="undoBtn">Undo last press</button>
+          <button class="button" id="resetBtn">Reset this live</button>
+          <button class="button" id="mockBtn">Mock 100-coin gift</button>
+          <button class="button" id="previewTenK">Preview 10K Christmas</button>
+        </div>
+        <div class="studio-toggles">
+          <label class="check-button"><input id="muteToggle" type="checkbox"><span>Mute sound effects</span></label>
+          <label class="check-button"><input id="sceneryToggle" type="checkbox" checked><span>Show scenery in OBS</span></label>
+        </div>
+        <p id="previewStatus" class="preview-status">10,000 coins: The Village Lights Up. Preview plays without changing your total.</p>
+        <div class="studio-tools">
+          <button class="button" id="currencyToggle">Currency: £ GBP</button>
+          <button class="button state-button" id="animationToggle">Coin animations: on</button>
+          <button class="button" id="timerBtn">Add live timer</button>
+        </div>
+        <p class="currency-note">Currency changes the symbol only. No exchange-rate conversion.</p>
+        <p class="rounding-note">Amounts are rounded to 2 decimal places for display; the exact total is retained underneath.</p>
+        <div id="statusText" class="save-note">Saved in this browser</div>
+      </article>
+      <aside class="studio-card details-card">
+        <h2>Overlay details</h2>
+        <div class="detail-grid">
+          <label>Festive heading<input id="titleInput" value="Do you love Christmas?" maxlength="48"></label>
+          <label>Live message<input id="subtitleInput" value="Share and like the live ✨" maxlength="64"></label>
+          <label>Top liker (Alt+L to edit)<input id="likerInput" value="" maxlength="32" placeholder="Add a name"></label>
+          <label>Top gifter (Alt+G to edit)<input id="gifterInput" value="" maxlength="32" placeholder="Add a name"></label>
+          <label>Savings goal label<input id="savingsLabelInput" value="Savings goal" maxlength="32"></label>
+          <label>Goal (£)<input id="goalInput" type="number" min="1" max="99999999" value="500"></label>
+        </div>
+        <div class="keybind-title">Keybinds</div>
+        <div class="keybind-list">
+          <div class="keybind-row"><span>1 coins</span><kbd class="keycap" data-bind="1">Alt+1</kbd></div>
+          <div class="keybind-row"><span>10 coins</span><kbd class="keycap" data-bind="10">Alt+2</kbd></div>
+          <div class="keybind-row"><span>100 coins</span><kbd class="keycap" data-bind="100">Alt+3</kbd></div>
+          <div class="keybind-row"><span>1,000 coins</span><kbd class="keycap" data-bind="1000">Alt+4</kbd></div>
+          <div class="keybind-row"><span>5,000 coins</span><kbd class="keycap" data-bind="5000">Alt+5</kbd></div>
+          <div class="keybind-row"><span>10,000 coins</span><kbd class="keycap" data-bind="10000">Alt+6</kbd></div>
+          <div class="keybind-row"><span>Edit top liker</span><kbd class="focus-key" data-focus="liker">Alt+L</kbd></div>
+          <div class="keybind-row"><span>Edit top gifter</span><kbd class="focus-key" data-focus="gifter">Alt+G</kbd></div>
+        </div>
+        <p class="keybind-help">Click a key, then press the key you want.</p>
       </aside>
     </section>
-    <footer><span>LIVE GIFT COUNTER <i>·</i> Manual mode</span><span>State syncs to your OBS overlay through this computer</span></footer>
-  </main>
-
-  <main id="overlay" class="overlay-root" aria-label="Live gift overlay">
-    <div class="overlay-copy"><div class="overlay-topline"><span class="overlay-star">✦</span><span id="overlayTitle">LIVE GIFT COUNTER</span><span class="overlay-star">✦</span></div><div id="overlayEarnings" class="overlay-earnings">£0.00</div><div class="overlay-coins"><span id="overlayCoins">0</span> coins collected</div><div class="overlay-caption" id="overlaySubtitle">Thanks for the love!</div><div class="overlay-names"><span id="overlayLiker"></span><span id="overlayGifter"></span></div><div class="overlay-goal"><span id="overlayGoalText">0 / 10,000</span><div class="overlay-track"><i id="overlayGoalFill"></i></div></div></div>
-    <div id="effectLayer" class="effect-layer" aria-live="off"></div>
-    <div id="ambientLayer" class="ambient-layer"></div>
+    <section class="live-preview-section">
+      <h2>Live preview</h2>
+      <p>Click any overlay text or amount to edit it here. Enter saves; Escape cancels.</p>
+      <div id="liveScenery" class="live-scenery">
+        <div class="village-scene" aria-hidden="true"><i class="moon"></i><i class="village-house house-one"></i><i class="village-house house-two"></i><i class="village-house house-three"></i><i class="pine pine-one">♠</i><i class="pine pine-two">♠</i><i class="snow-bank"></i></div>
+        <div class="preview-glass">
+          <div id="overlay" class="overlay-root preview-overlay">
+            <div class="overlay-copy">
+              <div id="overlayTimer" class="overlay-timer" hidden>00:00</div>
+              <div id="overlayTitle" class="overlay-title" tabindex="0">Do you love Christmas?</div>
+              <div class="overlay-eyebrow">MONEY MADE FROM THIS LIVE</div>
+              <div id="overlayEarnings" class="overlay-earnings">£0.00</div>
+              <div id="overlayCoins" class="overlay-coins">✨ All gifts are appreciated ✨</div>
+              <div class="overlay-names"><span id="overlayLiker"></span><span id="overlayGifter"></span></div>
+              <div class="overlay-goal"><strong id="overlayGoalLabel">Savings goal</strong><div id="overlayGoalText">£0.00 / £500.00</div><div class="overlay-track"><i id="overlayGoalFill"></i></div></div>
+              <div id="overlaySubtitle" class="overlay-caption" tabindex="0">Share and like the live ✨</div>
+            </div>
+            <div id="effectLayer" class="effect-layer" aria-live="off"></div>
+            <div id="ambientLayer" class="ambient-layer"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <footer class="studio-footer"><span id="savedLabel">Saved in this browser</span><span>Estimate is based on £12 per 1,000 coins and a 40% creator share.</span></footer>
   </main>
   <div id="toast" class="toast" role="status"></div>
   <script src="animation-manager.js"></script>

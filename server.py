@@ -14,10 +14,11 @@ HOST = "127.0.0.1"
 PORT = 8765
 ROOT = Path(__file__).resolve().parent
 STATE_FILE = ROOT / "gift-counter-state.json"
-TIERS = {1, 10, 100, 1000, 5000}
+TIERS = {1, 10, 100, 1000, 5000, 10000}
 DEFAULT_STATE = {
     "theme": "normal", "title": "LIVE GIFT COUNTER", "subtitle": "Thanks for the love!",
-    "liker": "", "gifter": "", "goal": 10000, "totalCoins": 0, "muted": False,
+    "liker": "", "gifter": "", "savingsLabel": "Savings goal", "goal": 500, "totalCoins": 0,
+    "muted": True, "currency": "USD", "showScenery": True, "animations": True, "liveTimer": False, "liveTimerAt": 0,
 }
 
 lock = threading.RLock()
@@ -131,7 +132,7 @@ class Handler(SimpleHTTPRequestHandler):
             self.send_json(400, {"error": "eventId must be a non-empty string of at most 200 characters"})
             return
         if isinstance(coins, bool) or not isinstance(coins, int) or coins not in TIERS:
-            self.send_json(400, {"error": "coins must be one of 1, 10, 100, 1000, or 5000"})
+            self.send_json(400, {"error": "coins must be one of 1, 10, 100, 1000, 5000, or 10000"})
             return
         with lock:
             if event_id in event_ids:

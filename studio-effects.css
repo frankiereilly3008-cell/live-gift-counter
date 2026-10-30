@@ -1,0 +1,16 @@
+/* Gift animation effects for the studio preview and OBS browser source. */
+.gift-effect{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none;overflow:hidden;z-index:5}
+.gift-effect::before{content:"";position:absolute;width:min(70vw,700px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,rgba(255,225,158,.42),rgba(255,151,103,.12) 38%,transparent 68%);animation:studio-flash 1.15s ease-out both}
+.effect-label{position:absolute;top:18%;left:50%;transform:translateX(-50%);padding:12px 20px;border-radius:999px;background:rgba(12,24,38,.82);border:1px solid rgba(255,222,172,.5);color:#ffe2a6;font-weight:900;font-size:clamp(18px,3vw,38px);text-shadow:0 3px 10px #000;white-space:nowrap;z-index:7;animation:studio-label 2.3s ease both}
+.gift-effect.sweep::before{width:130vw;aspect-ratio:2.3;border-radius:50%;background:radial-gradient(ellipse,rgba(188,231,255,.72),rgba(158,116,220,.26) 45%,transparent 70%);animation:studio-sweep 2.2s ease-in-out both}
+.gift-effect.reveal::before{width:min(85vw,900px);background:radial-gradient(circle,rgba(255,229,165,.62),rgba(253,163,95,.18) 48%,transparent 72%);animation:studio-reveal 3s ease both}
+.gift-effect.spectacle::before{width:min(110vw,1250px);background:radial-gradient(circle,rgba(255,237,179,.75),rgba(251,135,133,.3) 38%,rgba(156,113,221,.13) 60%,transparent 74%);animation:studio-spectacle 4.2s ease both}
+@keyframes studio-flash{0%{opacity:0;transform:scale(.25)}25%{opacity:1}100%{opacity:0;transform:scale(1.35)}}
+@keyframes studio-sweep{0%{opacity:0;transform:translateX(-70%) rotate(-12deg)}35%{opacity:1}100%{opacity:0;transform:translateX(75%) rotate(-12deg)}}
+@keyframes studio-reveal{0%{opacity:0;transform:scale(.1)}35%{opacity:1;transform:scale(1)}75%{opacity:.8}100%{opacity:0;transform:scale(1.35)}}
+@keyframes studio-spectacle{0%{opacity:0;transform:scale(.12) rotate(-18deg)}25%{opacity:1}65%{opacity:.95;transform:scale(1.05) rotate(12deg)}100%{opacity:0;transform:scale(1.5) rotate(30deg)}}
+@keyframes studio-label{0%,100%{opacity:0;translate:0 12px;scale:.92}12%,78%{opacity:1;translate:0 0;scale:1}}
+body.overlay-mode{margin:0;min-height:100vh;overflow:hidden;background:transparent!important}
+body.overlay-mode #controller{display:none!important}
+body.overlay-mode #overlay{position:fixed;inset:0;display:grid;place-items:center;padding:4vh 5vw;background:transparent;z-index:10}
+body.overlay-mode #overlay .overlay-copy{width:min(100%,1200px);min-height:88vh}

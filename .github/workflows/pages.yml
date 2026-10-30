@@ -7,6 +7,7 @@ on:
       - 'index.html'
       - 'styles.css'
       - 'theme-effects.css'
+      - 'studio-effects.css'
       - 'app.js'
       - 'animation-manager.js'
       - '.github/workflows/pages.yml'
@@ -37,7 +38,7 @@ jobs:
       - name: Prepare browser site
         run: |
           mkdir dist
-          cp index.html styles.css theme-effects.css app.js animation-manager.js dist/
+          cp index.html styles.css theme-effects.css studio-effects.css app.js animation-manager.js dist/
       - name: Upload site
         uses: actions/upload-pages-artifact@v3
         with:
