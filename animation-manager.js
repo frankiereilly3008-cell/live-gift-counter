@@ -5,8 +5,9 @@
     halloween: { 10: ['🎃', '🦇', '🍬'], 100: ['🎃', '🕸️', '🦇'], 1000: ['👻', '🧙', '🦇'], 5000: ['🎃', '👻', '🌕'], 1: ['🦇', '🕸️'] }
   };
   const LABELS = { 1: 'A little love!', 10: 'Gift received!', 100: 'Big thanks!', 1000: 'Amazing support!', 5000: 'Incredible!' };
-  const layer = document.getElementById('effectLayer');
-  const ambient = document.getElementById('ambientLayer');
+  const overlayMode = new URLSearchParams(location.search).has('overlay');
+  const layer = document.getElementById(overlayMode ? 'effectLayer' : 'controlEffectLayer');
+  const ambient = document.getElementById(overlayMode ? 'ambientLayer' : 'controlAmbientLayer');
   const queue = [];
   let playing = false;
   let ambientTheme = '';
@@ -55,13 +56,14 @@
     const glyph = symbol(theme, coins);
     if (!glyph) { playing = false; return playNext(); }
     sound(coins);
+    layer.closest('.control-preview')?.classList.add('has-gift');
     const effect = document.createElement('div');
     effect.className = 'gift-effect ' + (coins >= 5000 ? 'spectacle' : coins >= 1000 ? 'reveal' : coins >= 100 ? 'sweep' : '');
     effect.textContent = glyph; layer.append(effect);
     if (coins >= 5000) { const flash = document.createElement('div'); flash.className = 'flash'; layer.append(flash); setTimeout(() => flash.remove(), 700); }
     const label = document.createElement('div'); label.className = 'effect-label'; label.textContent = LABELS[coins] || 'Thank you!'; layer.append(label);
     const duration = coins >= 5000 ? 4800 : coins >= 1000 ? 3400 : coins >= 100 ? 2400 : 1350;
-    setTimeout(() => { effect.remove(); label.remove(); playing = false; playNext(); }, duration);
+    setTimeout(() => { effect.remove(); label.remove(); playing = false; if (!queue.length) layer.closest('.control-preview')?.classList.remove('has-gift'); playNext(); }, duration);
   }
   window.AnimationManager = { enqueue, setTheme };
 })();

@@ -2,6 +2,12 @@
 
 A small editable browser overlay and control panel for manually counting TikTok LIVE gifts. The project uses only Python 3's standard library. It has no Python, npm, or other project dependencies. Use a modern browser; OBS is only needed for the browser-source overlay.
 
+## Open the hosted browser version
+
+The hosted site is designed for someone to open a link and count gifts right in their browser. It saves the counter and settings in that browser on that device. It does not require Python or OBS.
+
+For the full local OBS workflow, run the local Python server using the steps below.
+
 ## Start on Windows
 
 Open PowerShell in this folder and run:

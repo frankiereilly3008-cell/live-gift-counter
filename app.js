@@ -1,15 +1,17 @@
 (() => {
   const params = new URLSearchParams(location.search);
   const overlayMode = params.has('overlay');
+  const hostedMode = location.protocol === 'file:' || !['127.0.0.1', 'localhost'].includes(location.hostname);
   if (overlayMode) document.body.classList.add('overlay-mode');
   const $ = (id) => document.getElementById(id);
   const COIN_VALUE = 0.0048;
   const defaults = { theme: 'normal', title: 'LIVE GIFT COUNTER', subtitle: 'Thanks for the love!', liker: '', gifter: '', goal: 10000, totalCoins: 0, muted: false };
   let state = { ...defaults }, seq = 0, booted = false, busy = false, saveTimer, toastTimer, undoStack = [], queuedPatch = {};
+  if (hostedMode) { try { state = { ...state, ...JSON.parse(localStorage.getItem('giftCounterState') || '{}') }; } catch (_) { /* Start fresh if browser storage is unavailable. */ } }
   let bindings = { 1: { key: '1', alt: true }, 10: { key: '2', alt: true }, 100: { key: '3', alt: true }, 1000: { key: '4', alt: true }, 5000: { key: '5', alt: true }, liker: { key: 'l', alt: true }, gifter: { key: 'g', alt: true } };
   try { bindings = { ...bindings, ...JSON.parse(localStorage.getItem('giftCounterBindings') || '{}') }; } catch (_) { /* Use defaults when local storage is unavailable. */ }
   const money = coins => `£${(Number(coins || 0) * COIN_VALUE).toFixed(2)}`;
-  function setOnline(ok) { const status = document.querySelector('.server-status'); if (status) status.classList.toggle('online', ok); if ($('statusText')) $('statusText').textContent = ok ? 'Server connected' : 'Server unreachable'; }
+  function setOnline(ok) { const status = document.querySelector('.server-status'); if (status) status.classList.toggle('online', ok); if ($('statusText')) $('statusText').textContent = hostedMode ? 'Saved in this browser' : ok ? 'Server connected' : 'Server unreachable'; }
   function render() {
     const coins = Number(state.totalCoins) || 0, goal = Math.max(1, Number(state.goal) || 1), pct = Math.min(100, coins / goal * 100);
     document.body.dataset.theme = state.theme;
@@ -61,6 +63,7 @@
     });
   }
   async function requestState() {
+    if (hostedMode) return;
     const response = await fetch(booted ? `/state?after=${seq}` : '/state', { cache: 'no-store' });
     if (!response.ok) throw new Error('State request failed');
     const data = await response.json();
@@ -72,6 +75,11 @@
   }
   async function save(patch) {
     state = { ...state, ...patch }; render();
+    if (hostedMode) {
+      try { localStorage.setItem('giftCounterState', JSON.stringify(state)); setOnline(true); if ($('savedLabel')) $('savedLabel').textContent = 'Saved in this browser'; }
+      catch (_) { setOnline(false); if ($('savedLabel')) $('savedLabel').textContent = 'Browser storage unavailable'; }
+      return;
+    }
     try {
       const response = await fetch('/state', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ state: patch }) });
       if (!response.ok) throw new Error('Save failed');
@@ -87,6 +95,14 @@
     if (busy) return;
     busy = true;
     if (!external) undoStack.push(Number(state.totalCoins) || 0);
+    if (hostedMode) {
+      state.totalCoins = (Number(state.totalCoins) || 0) + coins;
+      try { localStorage.setItem('giftCounterState', JSON.stringify(state)); } catch (_) { /* Keep this session's count in memory. */ }
+      window.AnimationManager?.enqueue({ eventId: `browser-${Date.now()}-${Math.random()}`, coins, theme: state.theme, seq: ++seq });
+      render(); setOnline(true); if (!external) toast(`+${coins.toLocaleString('en-GB')} coins added`);
+      busy = false;
+      return;
+    }
     const eventId = `manual-${Date.now()}-${Math.random().toString(36).slice(2)}`;
     try {
       const response = await fetch('/gift-event', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ eventId, coins }) });
@@ -102,6 +118,7 @@
   async function setTotal(coins) {
     const patch = { totalCoins: Math.max(0, Number(coins) || 0) };
     state = { ...state, ...patch }; render();
+    if (hostedMode) { try { localStorage.setItem('giftCounterState', JSON.stringify(state)); } catch (_) { /* Keep this session's count in memory. */ } return; }
     try { const r = await fetch('/state', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ state: patch }) }); if (!r.ok) throw 0; const d = await r.json(); state = { ...state, ...d.state }; render(); }
     catch (_) { setOnline(false); toast('Could not update total'); }
   }
@@ -138,7 +155,7 @@
       else gift(Number(id));
     }, true);
   }
-  async function poll() { try { await requestState(); } catch (_) { setOnline(false); } }
+  async function poll() { if (hostedMode) return; try { await requestState(); } catch (_) { setOnline(false); } }
   render();
-  poll(); setInterval(poll, 900);
+  if (!hostedMode) { poll(); setInterval(poll, 900); }
 })();

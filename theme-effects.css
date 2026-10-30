@@ -7,6 +7,28 @@
 }
 #effectLayer.effect-layer { z-index: 4; }
 .overlay-copy { z-index: 3; }
+.control-preview {
+  position: relative;
+  height: 142px;
+  margin-top: 16px;
+  overflow: hidden;
+  border: 1px solid #35363d;
+  border-radius: 12px;
+  background: radial-gradient(ellipse at 50% 115%, #343545 0, #202027 72%);
+}
+.control-preview .ambient-layer { z-index: 1; }
+.control-preview .effect-layer { z-index: 2; }
+.preview-heading, .preview-empty {
+  position: absolute;
+  z-index: 3;
+  left: 14px;
+  color: #9e9da9;
+  font: 9px 'DM Mono', monospace;
+  letter-spacing: .11em;
+}
+.preview-heading { top: 12px; }
+.preview-empty { bottom: 12px; left: 50%; transform: translateX(-50%); white-space: nowrap; letter-spacing: 0; }
+.control-preview.has-gift .preview-empty { display: none; }
 .particle {
   position: absolute;
   display: block;
