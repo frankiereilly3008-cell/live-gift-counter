@@ -1,0 +1,36 @@
+/* Keep the original dark controller skin. This file only restores the overlay weather. */
+#ambientLayer.ambient-layer {
+  z-index: 2;
+  display: block;
+  visibility: visible;
+  pointer-events: none;
+}
+#effectLayer.effect-layer { z-index: 4; }
+.overlay-copy { z-index: 3; }
+.particle {
+  position: absolute;
+  display: block;
+  top: -12vh;
+  left: var(--x);
+  opacity: .9;
+  font-size: var(--size);
+  line-height: 1;
+  animation: live-fall var(--duration) linear var(--delay, 0s) infinite;
+  will-change: transform, opacity;
+  pointer-events: none;
+}
+.particle-normal { color: #e8f8ff; text-shadow: 0 0 9px #a8e8ffb0; }
+.particle-christmas { color: #f3fcff; text-shadow: 0 0 10px #bcefffde; }
+.particle-halloween { filter: drop-shadow(0 2px 7px #ff762ba8); }
+.particle-halloween:nth-child(3n) { color: #ffad57; }
+.particle-halloween:nth-child(3n + 1) { color: #d5b7e4; }
+.particle-halloween:nth-child(3n + 2) { color: #f4edf6; }
+@keyframes live-fall {
+  0% { transform: translate3d(0, -14vh, 0) rotate(0); opacity: 0; }
+  8% { opacity: .95; }
+  90% { opacity: .88; }
+  100% { transform: translate3d(var(--drift), 116vh, 0) rotate(540deg); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .particle { animation-duration: 28s; }
+}
