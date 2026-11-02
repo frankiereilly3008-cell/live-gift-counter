@@ -17,6 +17,7 @@
     merged.likerKey=shortcuts.normalize(merged.likerKey);merged.gifterKey=shortcuts.normalize(merged.gifterKey);
     while(merged.keys.length<amounts.length){const used=[...merged.keys,merged.likerKey,merged.gifterKey];let candidate=defaults.keys[merged.keys.length];for(let i=0;used.some(k=>shortcuts.same(k,candidate));i++)candidate=i===0?'Alt+0':`Alt+F${i+1}`;merged.keys.push(shortcuts.normalize(candidate))}
     merged.platformCut=merged.platformCut!==false;
+    merged.counterBox=merged.counterBox!==false;
     merged.currency=merged.currency==='USD'?'USD':'GBP';merged.animationsEnabled=merged.animationsEnabled!==false;
     merged.theme=Object.hasOwn(themeCopy,merged.theme)?merged.theme:'christmas';
     merged.themeText=merged.themeText&&typeof merged.themeText==='object'?{...merged.themeText}:{};
@@ -55,7 +56,7 @@
   }
   function switchTheme(theme){state.themeText[state.theme]={title:state.title,message:state.message};state.theme=theme;const copy=state.themeText[theme];state.title=copy?.title??themeCopy[theme][0];state.message=copy?.message??themeCopy[theme][1];save()}
   function render(){
-    document.body.classList.toggle('overlay-mode',overlayMode);document.body.classList.toggle('scenic-overlay',!!state.scenicOverlay);
+    document.body.classList.toggle('overlay-mode',overlayMode);document.body.classList.toggle('scenic-overlay',!!state.scenicOverlay);document.body.classList.toggle('counter-box-hidden',!state.counterBox);
     el('controller').hidden=overlayMode;el('previewHeading').hidden=overlayMode;particles();
     document.querySelectorAll('[data-theme]').forEach(b=>{b.classList.toggle('active',b.dataset.theme===state.theme);b.onclick=()=>switchTheme(b.dataset.theme)});
     text('total',money(state.total));text('estimateTag',`Estimate · ${money(12)} / 1,000 coins · ${state.platformCut?'40% creator share':'100% before platform cut'}`);text('goalInputLabel',`Goal (${state.currency==='USD'?'$':'£'})`);
@@ -81,6 +82,7 @@
     el('scenicOverlay').checked=!!state.scenicOverlay;el('scenicOverlay').onchange=e=>{state.scenicOverlay=e.target.checked;save()};
     text('currencyToggle',`Currency: ${state.currency==='USD'?'$ USD':'£ GBP'}`);el('currencyToggle').onclick=()=>{state.currency=state.currency==='GBP'?'USD':'GBP';save()};
     text('animationToggle',`Coin animations: ${state.animationsEnabled?'on':'off'}`);el('animationToggle').setAttribute('aria-pressed',String(state.animationsEnabled));el('animationToggle').onclick=()=>{state.animationsEnabled=!state.animationsEnabled;save()};
+    text('counterBoxToggle',`Counter box: ${state.counterBox?'on':'off'}`);el('counterBoxToggle').setAttribute('aria-pressed',String(state.counterBox));el('counterBoxToggle').onclick=()=>{state.counterBox=!state.counterBox;save()};
     text('timerToggle',state.timerEnabled?'Hide live timer':'Add live timer');el('timerToggle').setAttribute('aria-pressed',String(state.timerEnabled));el('timerToggle').onclick=()=>{state.timerEnabled=!state.timerEnabled;if(state.timerEnabled&&!state.liveStartedAt)state.liveStartedAt=Date.now();save()};
     el('timerRestart').hidden=!state.timerEnabled;el('timerSetting').hidden=!state.timerEnabled;el('timerRestart').onclick=()=>{state.liveStartedAt=Date.now();save()};
     if(document.activeElement!==el('timerStart'))el('timerStart').value=state.liveStartedAt?localDateTime(state.liveStartedAt):'';

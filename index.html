@@ -41,7 +41,7 @@
   <link rel="stylesheet" href="halloween-finale.css">
   <link rel="stylesheet" href="christmas-finale.css">
   <link rel="stylesheet" href="theme-scenery.css">
-  <link rel="stylesheet" href="studio-controls.css">
+  <link rel="stylesheet" href="studio-controls.css?v=20261102-counter-box">
   <style>.coin-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.cinema.premium-scene{background:transparent;animation:none;backdrop-filter:none}.cinema.premium-scene::before,.cinema.premium-scene::after{display:none}</style>
 </head>
 <body>
@@ -59,7 +59,7 @@
       <div class="coin-grid" id="coins"></div>
       <div class="row"><button class="soft" id="undo">Undo last press</button><button class="soft" id="reset">Reset this live</button><button class="soft" id="mockGift">Mock 100-coin gift</button><button class="soft" id="previewFinale" hidden>Preview 10K wave</button><label class="soft"><input type="checkbox" id="mute"> Mute sound effects</label><label class="soft" title="Turn off to keep the OBS background transparent"><input type="checkbox" id="scenicOverlay"> Show scenery in OBS</label></div>
       <p class="hint" id="finaleHint"></p>
-      <div class="row studio-toggles"><button class="soft" id="currencyToggle" title="Changes the symbol only; amounts stay the same">Currency: £ GBP</button><button class="soft" id="platformCutToggle" aria-pressed="false" title="Switch the whole live total and coin estimates between the creator share and full coin value">Remove 60% cut</button><button class="soft" id="animationToggle" aria-pressed="true">Coin animations: on</button><button class="soft" id="timerToggle" aria-pressed="false">Add live timer</button><button class="soft" id="timerRestart" hidden>Restart timer</button></div>
+      <div class="row studio-toggles"><button class="soft" id="currencyToggle" title="Changes the symbol only; amounts stay the same">Currency: £ GBP</button><button class="soft" id="platformCutToggle" aria-pressed="false" title="Switch the whole live total and coin estimates between the creator share and full coin value">Remove 60% cut</button><button class="soft" id="animationToggle" aria-pressed="true">Coin animations: on</button><button class="soft" id="counterBoxToggle" aria-pressed="true" aria-controls="overlay" title="Hide the background and border around the counter. Tap its text to edit in either mode.">Counter box: on</button><button class="soft" id="timerToggle" aria-pressed="false">Add live timer</button><button class="soft" id="timerRestart" hidden>Restart timer</button></div>
       <p class="muted currency-note" id="platformCutHint">60% platform deduction applied. Remove it to show the full coin value.</p>
       <p class="muted currency-note">Currency changes the symbol only. No exchange-rate conversion.</p>
       <div class="field timer-setting" id="timerSetting" hidden><label for="timerStart">Live started at</label><input id="timerStart" type="datetime-local" step="1"><p class="hint">Already live? Set your actual start time here.</p></div>
@@ -94,7 +94,7 @@
   </div>
 </main>
 <script src="keyboard-shortcuts.js"></script>
-<script src="controller.js"></script>
+<script src="controller.js?v=20261102-counter-box"></script>
 <script src="premium-christmas-scenes.js"></script>
 <script src="premium-other-scenes.js"></script>
 <script src="normal-finale.js"></script>
