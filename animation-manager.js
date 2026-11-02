@@ -1,4 +1,4 @@
-/* Theme-aware, sequential overlay animation playback. Kept separate from the controller. */
+/* Theme-aware playback: finish the active scene, then play the highest queued coin tier. */
 (() => {
   const layer = document.getElementById('giftFx');
   const queue = [];
@@ -90,9 +90,10 @@
       console.warn('[Gift animation] Ignored invalid animation event', event); return;
     }
     if (played.has(event.id) || queue.some(item => item.id === event.id)) return;
-    if (!enabled) {played.add(event.id);if(played.size>100)played.delete(played.values().next().value);return;}
-    queue.push(event);
-    if (queue.length > 40) queue.shift();
+    if (!enabled) {played.add(event.id);return;}
+    // Insert before smaller gifts; equal tiers keep their arrival order.
+    const nextSmaller = queue.findIndex(item => item.tier < event.tier);
+    queue.splice(nextSmaller < 0 ? queue.length : nextSmaller, 0, event);
     playNext();
   }
   function playNext() {
@@ -100,7 +101,8 @@
     busy = true;
     const event = queue.shift();
     played.add(event.id);
-    if (played.size > 100) played.delete(played.values().next().value);
+    // Keep IDs for this page session so polling cannot replay a priority gift
+    // while a long backlog of smaller gifts is still draining.
     const theme = themes[event.theme];
     if (!theme) {
       report('No animation configured; skipping gracefully', event);
