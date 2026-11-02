@@ -57,7 +57,8 @@ class Handler(SimpleHTTPRequestHandler):
                         return
                     state.setdefault("total", 0)
                     state.setdefault("history", []).append(coins)
-                    state["total"] += coins * 12 / 1000 * .4
+                    share = .4 if state.get("platformCut", True) is not False else 1
+                    state["total"] += coins * 12 / 1000 * share
                     state.setdefault("animationQueue", []).append({"id": str(uuid.uuid4()), "coins": coins, "theme": state.get("theme", "normal"), "tier": COIN_TIERS[coins], "source": "backend", "at": int(time.time() * 1000), "eventId": event_id})
                     state["animationQueue"] = state["animationQueue"][-40:]
                     state["processedEventIds"] = (seen + [event_id])[-500:]

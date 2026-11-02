@@ -48,13 +48,15 @@ If the mock gift reports that the server is unreachable, confirm the server is r
 
 ## Payout estimate
 
-The starting estimate follows the assumptions supplied by the user: 1,000 coins = £12 and a 60% platform share, leaving a 40% creator share. This gives an estimated £4.80 per 1,000 coins (£0.0048 per coin). These are editable in `controller.js` in the `addCoins` calculation and coin button estimates, and in `server.py` for backend gifts. TikTok payout amounts can vary; this is an estimate, not an official payout quote.
+The starting estimate follows the assumptions supplied by the user: 1,000 coins = £12 and a 60% platform share, leaving a 40% creator share. This gives an estimated £4.80 per 1,000 coins (£0.0048 per coin). **Remove 60% cut** switches the whole live total, coin button estimates and future gifts to the full £12 per 1,000 coins. **Restore 60% cut** switches them back to the 40% creator share. Undo uses the selected rate, including gifts added before switching. This preference is saved and also applies to backend gifts in local server mode. This button refers to the assumed platform deduction, not personal income tax. TikTok payout amounts can vary; this is an estimate, not an official payout quote.
 
 The live total keeps sub-penny amounts internally and displays rounded pounds and pence. For example, five 1-coin presses add £0.024 internally and display as £0.02.
 
 ## Keybinds and controls
 
-Defaults are **Alt+1** through **Alt+6** for 1, 10, 100, 1,000, 5,000, and 10,000 coins. Existing saved shortcuts are preserved when upgrading. The new tier uses Alt+6 unless it is already assigned, in which case an unused shortcut is chosen and shown in Keybinds. Click a displayed key to change it; bindings require a modifier to avoid reacting while typing names. The liker and gifter shortcuts default to **Alt+L** and **Alt+G** and focus their fields without changing the page scroll position.
+Defaults are **Alt+1** through **Alt+6** for 1, 10, 100, 1,000, 5,000, and 10,000 coins. On a MacBook these are displayed as **Option+1** through **Option+6**. Existing saved shortcuts are preserved when upgrading. Click a displayed key and press any single key or combination, including letters, numbers, Space, arrows, function keys, Shift, Control, Option or Command. A modifier used alone is assigned and triggered on release. Use **Cancel keybind change** to cancel; Escape can itself be assigned. Duplicate assignments are rejected with a message so each shortcut has one action.
+
+Shortcuts use the physical key, so Mac Option combinations continue to work when macOS produces a symbol or accented character. The liker and gifter shortcuts default to **Alt+L** and **Alt+G** (**Option+L/G** on Mac) and focus their fields without changing the page scroll position. All shortcuts pause while editing inputs or preview text, and holding a key does not repeatedly add gifts. Keep this browser page focused; shortcuts reserved by your browser or operating system may take priority.
 
 The controller includes undo and reset buttons, editable overlay text, top liker/gifter fields, and a savings goal. The theme bar at the top switches between Christmas (falling snow), Halloween (falling leaves, bats, and pumpkins), and Normal. State is saved locally on this computer.
 
